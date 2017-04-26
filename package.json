@@ -1,0 +1,26 @@
+{
+  "name": "xconvert",
+  "version": "0.0.1",
+  "description": "XML converter for JSON format.",
+  "main": "dist/index",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tsc && jasmine"
+  },
+  "keywords": [
+    "json",
+    "xml",
+    "convert",
+    "parse"
+  ],
+  "author": "Mikalai Kardash",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^2.6.0",
+    "tslint": "^5.1.0",
+    "typescript": "^2.2.2",
+    "typings": "^2.1.1"
+  }
+}
