@@ -10,6 +10,7 @@ namespace Symbols {
     export const Space  = ' ';
     export const Equal  = '=';
     export const DoubleQuote = '"';
+    export const Exclamation = '!';
 
     export const ForwardSlash = '/';
     export const BackwardSlash = '\\';
@@ -26,6 +27,8 @@ interface IState {
 interface IStateManager {
     current: IState;
     switchTo(state: IState): void;
+
+    jump(n: number): void;
 }
 
 interface INameSetter {
@@ -46,6 +49,10 @@ interface INodeAdder {
 
 interface ITextAdder {
     addText(text: IXText): void;
+}
+
+interface ICommentsAdder {
+    addComments(comments: IXComment): void;
 }
 
 class Value implements IState {
@@ -236,6 +243,7 @@ class TextExpression implements IState {
         switch (ch) {
             case Symbols.NodeOpening:
                 this.switchBack();
+                this.prev.read(ch);
                 break;
 
             default: {
@@ -253,7 +261,7 @@ class TextExpression implements IState {
     }    
 }
 
-class NodeExpression implements IState, IAttributeAdder, ITextAdder {
+class NodeExpression implements IState, IAttributeAdder, ITextAdder, INodeAdder, ICommentsAdder {
     
     constructor(
         public manager: IStateManager, 
@@ -261,7 +269,7 @@ class NodeExpression implements IState, IAttributeAdder, ITextAdder {
         public nodeAdder: INodeAdder) { }  
 
     attributes: IXAttribute[] = [];
-    children: (IXNode | IXText)[] = [];
+    children: (IXNode | IXText | IXComment)[] = [];
 
     name: string = '';
     closingTag: string = '';
@@ -333,24 +341,40 @@ class NodeExpression implements IState, IAttributeAdder, ITextAdder {
     readContents(ch: string): void {
         switch (ch) {
             case Symbols.NodeOpening:
+                break;
+
+            case Symbols.ForwardSlash:
                 this.readingContents = false;
-                this.waitingForClosingTag = true;                
+                this.waitingForClosingTag = true;
                 break;
             
             default: {
-                let text = new TextExpression(this.manager, this, this);
-                this.switchTo(text);
-                text.read(ch);
+                if (this.previousChar === Symbols.NodeOpening) {
+                    if (ch === Symbols.Exclamation) {
+                        let comment = new CommentExpression(this.manager, this, this);
+                        this.manager.switchTo(comment);
+                        this.manager.jump(2);
+                    } else {
+                        let node = new NodeExpression(this.manager, this, this);
+                        this.switchTo(node);
+                        node.read(ch);
+                    }
+                } else {
+                    let text = new TextExpression(this.manager, this, this);
+                    this.switchTo(text);
+                    text.read(ch);
+                }
             }
             break;
         }
 
+        this.previousChar = ch;
     }
 
     waitForClosingTag(ch: string): void {
         this.closingTag += ch;
 
-        if (this.closingTag === `</${this.name}>`) {
+        if (this.closingTag === `/${this.name}>`) {
             this.switchBack();
         }
     }
@@ -362,13 +386,21 @@ class NodeExpression implements IState, IAttributeAdder, ITextAdder {
             Name: this.name
         };
 
-        if (this.attributes) {
+        if (this.attributes.length > 0) {
             xNode.Attributes = [];
+
+            this.attributes.forEach((a) => {
+                xNode.Attributes.push(a);
+            });
         }
 
-        this.attributes.forEach((a) => {
-            xNode.Attributes.push(a);
-        });
+        if (this.children.length > 0) {
+            xNode.Children = [];
+
+            this.children.forEach((c) => {
+                xNode.Children.push(c);
+            });
+        }
 
         this.nodeAdder.addNode(xNode);
     }
@@ -384,52 +416,107 @@ class NodeExpression implements IState, IAttributeAdder, ITextAdder {
     addText(text: IXText): void {
         this.children.push(text);
     }
+
+    addNode(node: IXNode): void {
+        this.children.push(node);
+    }
+
+    addComments(comment: IXComment): void {
+        this.children.push(comment);
+    }
 }
 
-class Default implements IState, IAttributeAdder, INodeAdder {
+class CommentExpression implements IState {
+    
+    constructor(
+        public manager: IStateManager, 
+        public prev: IState,
+        public commentsAdder: ICommentsAdder) { }
+
+    sequence: string = '';
+
+    read(ch: string): void {
+        this.sequence += ch;
+
+        if (this.endsWith('-->')) {
+            this.switchBack();
+        }
+    }
+
+    endsWith(s: string): boolean {
+        if (this.sequence.length < s.length) {
+            return false;
+        }
+
+        let end = this.sequence.substring(this.sequence.length - s.length);
+        return end === s;
+    }
+
+    switchBack(): void {
+        this.manager.switchTo(this.prev);
+
+        let comment = this.sequence.substring(0, this.sequence.length - 3);
+
+        this.commentsAdder.addComments({
+            Comment: comment
+        });
+        this.sequence = '';
+    }
+}
+
+class Default implements IState, IAttributeAdder, INodeAdder, ICommentsAdder {
 
     constructor(
         public manager: IStateManager, 
-        public prev: IState) { }    
+        public prev: IState) { }
 
     previousChar: string;
+    sequence: string = '';
 
     attributes: IXAttribute[] = [];
     nodes: IXNode[] = [];
+    comments: IXComment[] = [];
 
     read(ch: string) {
+        this.sequence += ch;
+
         switch (ch) {
             case Symbols.NodeOpening:
-                this.wait(ch);
+                //this.previousChar = ch;
                 break;
 
             case Symbols.Prolog:
                 if (this.previousChar === Symbols.NodeOpening) {
                     this.previousChar = '';
+                    this.sequence = '';
 
-                    this.manager.switchTo(new PrologExpression(this.manager, this, this));
+                    let prolog = new PrologExpression(this.manager, this, this);
+                    this.switchTo(prolog);
                 }
                 break;
             
             default: {
-                if (this.previousChar === Symbols.NodeOpening) {
-                    let nameSymbol = /\w/;
-                    if (nameSymbol.test(ch)) {
-                        
+                if (this.previousChar === Symbols.NodeOpening && ch !== Symbols.ForwardSlash) {
+                    let nodeName = Expressions.NodeName;
+                    if (nodeName.test(ch)) {
                         this.previousChar = '';
+                        this.sequence = '';
+
                         let node = new NodeExpression(this.manager, this, this);
                         this.switchTo(node);
                         node.read(ch);
                     }
+                } else if (this.endsWith('<!--')) {
+                    this.sequence = '';
+                    let comment = new CommentExpression(this.manager, this, this);
+                    this.switchTo(comment);
                 }
             }
             break;
         }
-    }
 
-    wait(ch: string) {
         this.previousChar = ch;
-    };
+    }
 
     addAttribute(attr: IXAttribute): void {
         this.attributes.push(attr);
@@ -438,30 +525,50 @@ class Default implements IState, IAttributeAdder, INodeAdder {
     addNode(node: IXNode): void {
         this.nodes.push(node);
     }
+
+    addComments(comments: IXComment): void {
+        this.comments.push(comments);
+    }
     
     switchTo(state: IState): void {
         this.manager.switchTo(state);
+    }
+
+    endsWith(s: string): boolean {
+        if (this.sequence.length < s.length) {
+            return false;
+        }
+
+        let end = this.sequence.substring(this.sequence.length - s.length);
+        return end === s;
     }
 }
 
 class Parser implements IParser, IStateManager {
     current: IState;
+    position: number = 0;
 
     switchTo(state: IState): void {
         this.current = state;
     }
 
-    read(ch: string) {
+    read(ch: string): void {
         this.current.read(ch);
+    }
+
+    jump(n: number): void {
+        this.position += n;
     }
 
     Parse(xmlContent: string): IXDoc {
         let d = new Default(this, null);
 
         this.switchTo(d);
+        this.position = 0;
 
-        for(let i = 0; i < xmlContent.length; i++) {
-            this.read(xmlContent[i]);
+        for(; this.position < xmlContent.length; this.position++) {
+            let ch = xmlContent[this.position];
+            this.read(ch);
         }
 
         let xDoc: IXDoc = { Version: '', Root: null };
@@ -479,12 +586,21 @@ class Parser implements IParser, IStateManager {
             xDoc.Root = d.nodes[0];
         }
 
+        let comments = d.comments;
+        if (comments.length > 0) {
+            xDoc.Comments = [];
+            comments.forEach((c) => {
+                xDoc.Comments.push(c);
+            });
+        }
+
         return xDoc;
     }
 }
 
 export {
     IAttributeAdder,
+    ICommentsAdder,
     INameSetter,
     INodeAdder,
     IParser,
@@ -494,6 +610,7 @@ export {
     IValueSetter,
     
     AttributeExpression,
+    CommentExpression,
     Name, 
     NodeExpression,
     PrologExpression,

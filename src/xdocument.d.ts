@@ -17,7 +17,7 @@ interface IXNode {
     Name: string;
 
     Attributes?: IXAttribute[];
-    Children?: (IXNode | IXText) [];
+    Children?: (IXNode | IXText | IXComment ) [];
 }
 
 interface IXAttribute {

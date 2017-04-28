@@ -1,0 +1,10 @@
+<root>
+    <!-- HEADER -->
+    
+    some text
+    <item quantity="35">item name</item>
+
+    <!-- 
+        FOOTER NOTE
+    -->
+</root>

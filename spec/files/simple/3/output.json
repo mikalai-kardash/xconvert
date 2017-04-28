@@ -1,0 +1,11 @@
+{
+    "name": "root",
+    "contents": [
+        "some text",
+        {
+            "name": "item",
+            "text": "item name",
+            "@quantity": 35            
+        }
+    ]
+}

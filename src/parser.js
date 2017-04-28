@@ -8,6 +8,7 @@ var Symbols;
     Symbols.Space = ' ';
     Symbols.Equal = '=';
     Symbols.DoubleQuote = '"';
+    Symbols.Exclamation = '!';
     Symbols.ForwardSlash = '/';
     Symbols.BackwardSlash = '\\';
 })(Symbols || (Symbols = {}));
@@ -184,6 +185,7 @@ var TextExpression = (function () {
         switch (ch) {
             case Symbols.NodeOpening:
                 this.switchBack();
+                this.prev.read(ch);
                 break;
             default:
                 {
@@ -267,21 +269,38 @@ var NodeExpression = (function () {
     NodeExpression.prototype.readContents = function (ch) {
         switch (ch) {
             case Symbols.NodeOpening:
+                break;
+            case Symbols.ForwardSlash:
                 this.readingContents = false;
                 this.waitingForClosingTag = true;
                 break;
             default:
                 {
-                    var text = new TextExpression(this.manager, this, this);
-                    this.switchTo(text);
-                    text.read(ch);
+                    if (this.previousChar === Symbols.NodeOpening) {
+                        if (ch === Symbols.Exclamation) {
+                            var comment = new CommentExpression(this.manager, this, this);
+                            this.manager.switchTo(comment);
+                            this.manager.jump(2);
+                        }
+                        else {
+                            var node = new NodeExpression(this.manager, this, this);
+                            this.switchTo(node);
+                            node.read(ch);
+                        }
+                    }
+                    else {
+                        var text = new TextExpression(this.manager, this, this);
+                        this.switchTo(text);
+                        text.read(ch);
+                    }
                 }
                 break;
         }
+        this.previousChar = ch;
     };
     NodeExpression.prototype.waitForClosingTag = function (ch) {
         this.closingTag += ch;
-        if (this.closingTag === "</" + this.name + ">") {
+        if (this.closingTag === "/" + this.name + ">") {
             this.switchBack();
         }
     };
@@ -290,12 +309,18 @@ var NodeExpression = (function () {
         var xNode = {
             Name: this.name
         };
-        if (this.attributes) {
+        if (this.attributes.length > 0) {
             xNode.Attributes = [];
+            this.attributes.forEach(function (a) {
+                xNode.Attributes.push(a);
+            });
         }
-        this.attributes.forEach(function (a) {
-            xNode.Attributes.push(a);
-        });
+        if (this.children.length > 0) {
+            xNode.Children = [];
+            this.children.forEach(function (c) {
+                xNode.Children.push(c);
+            });
+        }
         this.nodeAdder.addNode(xNode);
     };
     NodeExpression.prototype.switchTo = function (state) {
@@ -307,59 +332,115 @@ var NodeExpression = (function () {
     NodeExpression.prototype.addText = function (text) {
         this.children.push(text);
     };
+    NodeExpression.prototype.addNode = function (node) {
+        this.children.push(node);
+    };
+    NodeExpression.prototype.addComments = function (comment) {
+        this.children.push(comment);
+    };
     return NodeExpression;
 }());
 exports.NodeExpression = NodeExpression;
+var CommentExpression = (function () {
+    function CommentExpression(manager, prev, commentsAdder) {
+        this.manager = manager;
+        this.prev = prev;
+        this.commentsAdder = commentsAdder;
+        this.sequence = '';
+    }
+    CommentExpression.prototype.read = function (ch) {
+        this.sequence += ch;
+        if (this.endsWith('-->')) {
+            this.switchBack();
+        }
+    };
+    CommentExpression.prototype.endsWith = function (s) {
+        if (this.sequence.length < s.length) {
+            return false;
+        }
+        var end = this.sequence.substring(this.sequence.length - s.length);
+        return end === s;
+    };
+    CommentExpression.prototype.switchBack = function () {
+        this.manager.switchTo(this.prev);
+        var comment = this.sequence.substring(0, this.sequence.length - 3);
+        this.commentsAdder.addComments({
+            Comment: comment
+        });
+        this.sequence = '';
+    };
+    return CommentExpression;
+}());
+exports.CommentExpression = CommentExpression;
 var Default = (function () {
     function Default(manager, prev) {
         this.manager = manager;
         this.prev = prev;
+        this.sequence = '';
         this.attributes = [];
         this.nodes = [];
+        this.comments = [];
     }
     Default.prototype.read = function (ch) {
+        this.sequence += ch;
         switch (ch) {
             case Symbols.NodeOpening:
-                this.wait(ch);
+                //this.previousChar = ch;
                 break;
             case Symbols.Prolog:
                 if (this.previousChar === Symbols.NodeOpening) {
                     this.previousChar = '';
-                    this.manager.switchTo(new PrologExpression(this.manager, this, this));
+                    this.sequence = '';
+                    var prolog = new PrologExpression(this.manager, this, this);
+                    this.switchTo(prolog);
                 }
                 break;
             default:
                 {
-                    if (this.previousChar === Symbols.NodeOpening) {
-                        var nameSymbol = /\w/;
-                        if (nameSymbol.test(ch)) {
+                    if (this.previousChar === Symbols.NodeOpening && ch !== Symbols.ForwardSlash) {
+                        var nodeName = Expressions.NodeName;
+                        if (nodeName.test(ch)) {
                             this.previousChar = '';
+                            this.sequence = '';
                             var node = new NodeExpression(this.manager, this, this);
                             this.switchTo(node);
                             node.read(ch);
                         }
                     }
+                    else if (this.endsWith('<!--')) {
+                        this.sequence = '';
+                        var comment = new CommentExpression(this.manager, this, this);
+                        this.switchTo(comment);
+                    }
                 }
                 break;
         }
-    };
-    Default.prototype.wait = function (ch) {
         this.previousChar = ch;
     };
-    ;
     Default.prototype.addAttribute = function (attr) {
         this.attributes.push(attr);
     };
     Default.prototype.addNode = function (node) {
         this.nodes.push(node);
     };
+    Default.prototype.addComments = function (comments) {
+        this.comments.push(comments);
+    };
     Default.prototype.switchTo = function (state) {
         this.manager.switchTo(state);
+    };
+    Default.prototype.endsWith = function (s) {
+        if (this.sequence.length < s.length) {
+            return false;
+        }
+        var end = this.sequence.substring(this.sequence.length - s.length);
+        return end === s;
     };
     return Default;
 }());
 var Parser = (function () {
     function Parser() {
+        this.position = 0;
     }
     Parser.prototype.switchTo = function (state) {
         this.current = state;
@@ -367,11 +448,16 @@ var Parser = (function () {
     Parser.prototype.read = function (ch) {
         this.current.read(ch);
     };
+    Parser.prototype.jump = function (n) {
+        this.position += n;
+    };
     Parser.prototype.Parse = function (xmlContent) {
         var d = new Default(this, null);
         this.switchTo(d);
-        for (var i = 0; i < xmlContent.length; i++) {
-            this.read(xmlContent[i]);
+        this.position = 0;
+        for (; this.position < xmlContent.length; this.position++) {
+            var ch = xmlContent[this.position];
+            this.read(ch);
         }
         var xDoc = { Version: '', Root: null };
         var attrs = d.attributes;
@@ -384,6 +470,13 @@ var Parser = (function () {
         });
         if (d.nodes.length !== 0) {
             xDoc.Root = d.nodes[0];
+        }
+        var comments = d.comments;
+        if (comments.length > 0) {
+            xDoc.Comments = [];
+            comments.forEach(function (c) {
+                xDoc.Comments.push(c);
+            });
         }
         return xDoc;
     };
