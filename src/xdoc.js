@@ -7,15 +7,20 @@ var XNode = (function () {
         this.Children = [];
     }
     XNode.prototype.Accept = function (visitor) {
-        visitor.Visit(this);
+        visitor.visitNode(this);
     };
     return XNode;
 }());
 exports.XNode = XNode;
 var XDoc = (function () {
     function XDoc() {
+        this.Version = '';
+        this.Encoding = '';
+        this.Comments = [];
+        this.Root = null;
     }
     XDoc.prototype.Accept = function (visitor) {
+        visitor.visitDoc(this);
     };
     return XDoc;
 }());
@@ -25,6 +30,7 @@ var XText = (function () {
         this.Text = Text;
     }
     XText.prototype.Accept = function (visitor) {
+        visitor.visitText(this);
     };
     return XText;
 }());
@@ -34,7 +40,7 @@ var XComment = (function () {
         this.Comment = Comment;
     }
     XComment.prototype.Accept = function (visitor) {
-        throw new Error('Method not implemented.');
+        visitor.visitComment(this);
     };
     return XComment;
 }());
@@ -44,6 +50,9 @@ var XAttribute = (function () {
         this.Name = Name;
         this.Value = '';
     }
+    XAttribute.prototype.Accept = function (visitor) {
+        visitor.visitAttribute(this);
+    };
     XAttribute.Get = function (name, value) {
         var attr = new XAttribute(name);
         attr.Value = value;

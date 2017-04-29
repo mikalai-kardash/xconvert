@@ -101,10 +101,7 @@ var AttributeExpression = (function () {
         }
     };
     AttributeExpression.prototype.switchBack = function () {
-        this.attributeSetter.addAttribute({
-            Name: this.name,
-            Value: this.value
-        });
+        this.attributeSetter.addAttribute(xdoc_1.XAttribute.Get(this.name, this.value));
         this.manager.switchTo(this.prev);
     };
     AttributeExpression.prototype.switchTo = function (state) {

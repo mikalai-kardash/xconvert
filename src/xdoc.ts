@@ -7,12 +7,21 @@ class XNode implements IXNode, IVisitable {
     Children : (IXNode | IXText | IXComment ) [] = [];
     
     Accept(visitor: IVisitor): void {
-        visitor.Visit(this);
+        visitor.visitNode(this);
     }
 }
 
 class XDoc implements IXDoc {
+    
+    Version: string = '';
+    Encoding: string = '';
+
+    Comments: IXComment[] = [];
+
+    Root: IXNode = null;
+    
     Accept(visitor: IVisitor): void {
+        visitor.visitDoc(this);
     }
 }
 
@@ -20,6 +29,7 @@ class XText implements IXText {
     constructor(public Text: string) {}
 
     Accept(visitor: IVisitor): void {
+        visitor.visitText(this);
     }
 }
 
@@ -27,7 +37,7 @@ class XComment implements IXComment {
     constructor(public Comment: string) {}
 
     Accept(visitor: IVisitor): void {
-        throw new Error('Method not implemented.');
+        visitor.visitComment(this);
     }
 }
 
@@ -36,6 +46,10 @@ class XAttribute implements IXAttribute {
         public Name: string) {}
 
     Value: string = '';
+
+    Accept(visitor: IVisitor): void {
+        visitor.visitAttribute(this);
+    }
 
     public static Get(name: string, value: string): IXAttribute {
         let attr = new XAttribute(name);

@@ -1,23 +1,27 @@
 interface IVisitor {
-    Visit(node: IXNode): void;
+    visitDoc(doc: IXDoc);
+    visitNode(node: IXNode);
+    visitComment(node: IXComment);
+    visitText(text: IXText);
+    visitAttribute(attr: IXAttribute);
 }
 
 interface IVisitable {
     Accept(visitor: IVisitor): void;
 }
 
-interface IXDoc {
+interface IXDoc extends IVisitable {
     Version?: string;
     Encoding?: string;
     Comments?: IXComment[];
     Root?: IXNode;
 }
 
-interface IXText {
+interface IXText extends IVisitable {
     Text: string;
 }
 
-interface IXComment {
+interface IXComment extends IVisitable {
     Comment: string;
 }
 
@@ -28,7 +32,7 @@ interface IXNode extends IVisitable {
     Children?: (IXNode | IXText | IXComment ) [];
 }
 
-interface IXAttribute {
+interface IXAttribute extends IVisitable {
     Name: string;
     Value: string;
 }

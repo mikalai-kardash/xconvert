@@ -1,4 +1,4 @@
-import { XDoc, XNode, XText, XComment } from './xdoc';
+import { XDoc, XNode, XText, XComment, XAttribute } from './xdoc';
 
 interface IParser {
     Parse(xmlContent: string): IXDoc;
@@ -146,10 +146,9 @@ class AttributeExpression implements IState, INameSetter, IValueSetter {
     }
 
     switchBack(): void {
-        this.attributeSetter.addAttribute({
-            Name: this.name,
-            Value: this.value
-        });
+        this.attributeSetter.addAttribute(
+            XAttribute.Get(this.name, this.value)
+        );
 
         this.manager.switchTo(this.prev);
     }

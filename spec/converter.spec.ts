@@ -271,8 +271,6 @@ describe('converter', () => {
                 let root = getRoot();
                 let arr = <IJsArray>findProp(root, '@items').value;
                 expect(arr.children.length).toEqual(2);
-
-                log(js);
             });
 
             it('array contains unity package', () => {

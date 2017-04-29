@@ -48,18 +48,6 @@ var CurrentObject = (function () {
         };
         this.current.properties.push(prop);
     };
-    CurrentObject.prototype.SetItem = function (value) {
-        if (value.Name) {
-            var v = value;
-            var o = this.newJsObject();
-            var prop = {
-                name: v.Name,
-                value: o
-            };
-            this.current.properties.push(prop);
-            v.Accept(new Inspector(new CurrentObject(o)));
-        }
-    };
     CurrentObject.prototype.SetProperty = function (name, value) {
         var prop = this.createProperty(name, value);
         if (prop)
@@ -85,7 +73,15 @@ var Inspector = (function () {
     function Inspector(current) {
         this.current = current;
     }
-    Inspector.prototype.Visit = function (node) {
+    Inspector.prototype.visitDoc = function (doc) {
+    };
+    Inspector.prototype.visitComment = function (node) {
+    };
+    Inspector.prototype.visitText = function (text) {
+    };
+    Inspector.prototype.visitAttribute = function (attr) {
+    };
+    Inspector.prototype.visitNode = function (node) {
         var _this = this;
         this.current.SetName(node.Name);
         if (node.Attributes) {

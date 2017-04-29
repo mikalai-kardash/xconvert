@@ -7,7 +7,6 @@ type JsPropertyValue = IJsObject | string;
 
 interface ICurrentObject {
     SetText(text: string): void;
-    // SetItem(item: XItem);
     SetItems(items: XItem[]): void;
     SetName(name: string): void;
     SetProperty(name: string, value: string): void;
@@ -68,22 +67,6 @@ class CurrentObject implements ICurrentObject {
         this.current.properties.push(prop);
     }
 
-    SetItem(value: XItem): void {
-        if ((<IXNode>value).Name) {
-            let v = <IXNode>value;
-            let o = this.newJsObject();
-
-            let prop: IJsProperty = <IJsProperty>{
-                name: v.Name,
-                value: o
-            };
-
-            this.current.properties.push(prop);
-
-            v.Accept(new Inspector(new CurrentObject(o)));
-        }
-    }
-
     SetProperty(name: string, value: string): void {
         let prop = this.createProperty(name, value);
         if (prop) this.current.properties.push(prop);
@@ -107,9 +90,23 @@ class CurrentObject implements ICurrentObject {
 }
 
 class Inspector implements IVisitor {
-    constructor(private current: ICurrentObject) {}
+    
+    constructor(
+        private current: ICurrentObject) {}
 
-    Visit(node: IXNode): void {
+    visitDoc(doc: IXDoc) {
+    }
+    
+    visitComment(node: IXComment) {
+    }
+    
+    visitText(text: IXText) {
+    }
+    
+    visitAttribute(attr: IXAttribute) {
+    }
+
+    visitNode(node: IXNode): void {
         this.current.SetName(node.Name);
 
         if (node.Attributes) {
