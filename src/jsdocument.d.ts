@@ -1,6 +1,12 @@
-interface IJsDoc {
-    Object: IJsObject
+interface IJsObject {
+    properties: IJsProperty[];
 }
 
-interface IJsObject {
+interface IJsProperty {
+    name: string;
+    value: IJsObject | IJsArray | string;
+}
+
+interface IJsArray {
+    children: (string | IJsObject)[];
 }

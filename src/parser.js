@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var xdoc_1 = require("./xdoc");
 var Symbols;
 (function (Symbols) {
     Symbols.NodeOpening = '<';
@@ -196,9 +197,7 @@ var TextExpression = (function () {
     };
     TextExpression.prototype.switchBack = function () {
         this.manager.switchTo(this.prev);
-        this.textAdder.addText({
-            Text: this.text
-        });
+        this.textAdder.addText(new xdoc_1.XText(this.text));
     };
     return TextExpression;
 }());
@@ -306,9 +305,7 @@ var NodeExpression = (function () {
     };
     NodeExpression.prototype.switchBack = function () {
         this.manager.switchTo(this.prev);
-        var xNode = {
-            Name: this.name
-        };
+        var xNode = new xdoc_1.XNode(this.name);
         if (this.attributes.length > 0) {
             xNode.Attributes = [];
             this.attributes.forEach(function (a) {
@@ -364,9 +361,7 @@ var CommentExpression = (function () {
     CommentExpression.prototype.switchBack = function () {
         this.manager.switchTo(this.prev);
         var comment = this.sequence.substring(0, this.sequence.length - 3);
-        this.commentsAdder.addComments({
-            Comment: comment
-        });
+        this.commentsAdder.addComments(new xdoc_1.XComment(comment));
         this.sequence = '';
     };
     return CommentExpression;
@@ -459,7 +454,7 @@ var Parser = (function () {
             var ch = xmlContent[this.position];
             this.read(ch);
         }
-        var xDoc = { Version: '', Root: null };
+        var xDoc = new xdoc_1.XDoc();
         var attrs = d.attributes;
         attrs.forEach(function (a) {
             switch (a.Name) {

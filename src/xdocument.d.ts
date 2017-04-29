@@ -1,8 +1,16 @@
+interface IVisitor {
+    Visit(node: IXNode): void;
+}
+
+interface IVisitable {
+    Accept(visitor: IVisitor): void;
+}
+
 interface IXDoc {
-    Version: string;
+    Version?: string;
     Encoding?: string;
     Comments?: IXComment[];
-    Root: IXNode;
+    Root?: IXNode;
 }
 
 interface IXText {
@@ -13,7 +21,7 @@ interface IXComment {
     Comment: string;
 }
 
-interface IXNode {
+interface IXNode extends IVisitable {
     Name: string;
 
     Attributes?: IXAttribute[];

@@ -149,7 +149,6 @@ describe("parser", () => {
 
                 let r = xml.Root;
                 expect(r.Name).toEqual('node');
-                expect(r.Children).toBeFalsy();
             })
         });
 

@@ -1,3 +1,5 @@
+import { XDoc, XNode, XText, XComment } from './xdoc';
+
 interface IParser {
     Parse(xmlContent: string): IXDoc;
 }
@@ -255,9 +257,7 @@ class TextExpression implements IState {
 
     switchBack(): void {
         this.manager.switchTo(this.prev);
-        this.textAdder.addText({
-            Text: this.text
-        })
+        this.textAdder.addText(new XText(this.text));
     }    
 }
 
@@ -382,9 +382,7 @@ class NodeExpression implements IState, IAttributeAdder, ITextAdder, INodeAdder,
     switchBack(): void {
         this.manager.switchTo(this.prev);
 
-        let xNode: IXNode = {
-            Name: this.name
-        };
+        let xNode: IXNode = new XNode(this.name);
 
         if (this.attributes.length > 0) {
             xNode.Attributes = [];
@@ -457,9 +455,7 @@ class CommentExpression implements IState {
 
         let comment = this.sequence.substring(0, this.sequence.length - 3);
 
-        this.commentsAdder.addComments({
-            Comment: comment
-        });
+        this.commentsAdder.addComments(new XComment(comment));
         this.sequence = '';
     }
 }
@@ -571,7 +567,7 @@ class Parser implements IParser, IStateManager {
             this.read(ch);
         }
 
-        let xDoc: IXDoc = { Version: '', Root: null };
+        let xDoc: IXDoc = new XDoc();
         let attrs = d.attributes;
         
         attrs.forEach((a) => {

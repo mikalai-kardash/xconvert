@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Stringifier = (function () {
     function Stringifier() {
     }
-    Stringifier.prototype.Stringify = function (jsdoc) {
+    Stringifier.prototype.Stringify = function (js) {
         return '{}';
     };
     return Stringifier;

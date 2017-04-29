@@ -1,9 +1,9 @@
 interface IStringifier {
-    Stringify(jsdoc: IJsDoc): string;
+    Stringify(js: IJsObject): string;
 }
 
 class Stringifier implements IStringifier {
-    Stringify(jsdoc: IJsDoc): string {
+    Stringify(js: IJsObject): string {
         return '{}';
     }
 }
