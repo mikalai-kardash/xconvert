@@ -475,4 +475,9 @@ var Parser = (function () {
     return Parser;
 }());
 exports.Parser = Parser;
+function parse(xml) {
+    var parser = new Parser();
+    return parser.Parse(xml);
+}
+exports.parse = parse;
 //# sourceMappingURL=parser.js.map

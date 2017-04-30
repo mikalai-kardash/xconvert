@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var jsdoc_1 = require("./jsdoc");
 var Properties;
 (function (Properties) {
     Properties.Text = "@text";
@@ -26,9 +27,7 @@ var CurrentObject = (function () {
         var _this = this;
         if (items.length == 0)
             return;
-        var arr = {
-            children: []
-        };
+        var arr = new jsdoc_1.JsArray();
         items.forEach(function (i) {
             if (i.Text) {
                 var t = i;
@@ -42,10 +41,7 @@ var CurrentObject = (function () {
                 n.Accept(new Inspector(new CurrentObject(co)));
             }
         });
-        var prop = {
-            name: Properties.Items,
-            value: arr
-        };
+        var prop = new jsdoc_1.JsProperty(Properties.Items, arr);
         this.current.properties.push(prop);
     };
     CurrentObject.prototype.SetProperty = function (name, value) {
@@ -54,16 +50,11 @@ var CurrentObject = (function () {
             this.current.properties.push(prop);
     };
     CurrentObject.prototype.newJsObject = function () {
-        return {
-            properties: []
-        };
+        return new jsdoc_1.JsObject();
     };
     CurrentObject.prototype.createProperty = function (name, value) {
         if ((!!value) && value.length > 0) {
-            return {
-                name: name,
-                value: value
-            };
+            return new jsdoc_1.JsProperty(name, value);
         }
         return null;
     };
@@ -113,9 +104,7 @@ var Converter = (function () {
     function Converter() {
     }
     Converter.prototype.Convert = function (document) {
-        var current = {
-            properties: []
-        };
+        var current = new jsdoc_1.JsObject();
         var version = this.createProperty(Properties.Version, document.Version);
         var encoding = this.createProperty(Properties.Encoding, document.Encoding);
         if (version)
@@ -123,27 +112,24 @@ var Converter = (function () {
         if (encoding)
             current.properties.push(encoding);
         if (document.Root) {
-            var obj = {
-                properties: []
-            };
-            current.properties.push({
-                name: document.Root.Name,
-                value: obj,
-            });
+            var obj = new jsdoc_1.JsObject();
+            current.properties.push(new jsdoc_1.JsProperty(document.Root.Name, obj));
             document.Root.Accept(new Inspector(new CurrentObject(obj)));
         }
         return current;
     };
     Converter.prototype.createProperty = function (name, value) {
         if ((!!value) && value.length > 0) {
-            return {
-                name: name,
-                value: value
-            };
+            return new jsdoc_1.JsProperty(name, value);
         }
         return null;
     };
     return Converter;
 }());
 exports.Converter = Converter;
+function convert(xml) {
+    var converter = new Converter();
+    return converter.Convert(xml);
+}
+exports.convert = convert;
 //# sourceMappingURL=converter.js.map

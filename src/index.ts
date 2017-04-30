@@ -1,18 +1,15 @@
-import { Parser, IParser } from './parser';
+import { parse } from './parser';
 import { Converter, IConverter } from './converter';
-import { Stringifier, IStringifier } from './stringifier';
-import { Cleaner, ICleaner } from './cleaner';
+import { stringify } from './stringifier';
+import { clean } from './cleaner';
 
 function convert(xmlContent: string) : string {
-    let p: IParser = new Parser();
     let c: IConverter = new Converter();
-    let s: IStringifier = new Stringifier();
-    let cl: ICleaner = new Cleaner();
 
-    let xml = p.Parse(xmlContent);
-    let betterXml = cl.clean(xml);
+    let xml = parse(xmlContent);
+    let betterXml = clean(xml);
     let js = c.Convert(betterXml);
-    let str = s.Stringify(js);
+    let str = stringify(js);
     
     return str;
 }

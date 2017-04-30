@@ -18,6 +18,8 @@ var Inspector = (function () {
     };
     Inspector.prototype.visitNode = function (node) {
         var _this = this;
+        if (node.Name === '')
+            return;
         var copy = this.copyNode(node);
         if (this.currentNode) {
             this.currentNode.Children.push(copy);
@@ -34,6 +36,7 @@ var Inspector = (function () {
         if (node.Children) {
             node.Children.forEach(function (c) {
                 c.Accept(_this);
+                _this.currentNode = copy;
             });
         }
     };
@@ -41,6 +44,14 @@ var Inspector = (function () {
         this.ignore();
     };
     Inspector.prototype.visitText = function (text) {
+        var t = text.Text;
+        t = this.truncateString(t);
+        if (t.length === 0)
+            return;
+        var copy = new xdoc_1.XText(t);
+        if (this.currentNode) {
+            this.currentNode.Children.push(copy);
+        }
     };
     Inspector.prototype.visitAttribute = function (attr) {
         if (attr.Value === '')
@@ -52,7 +63,9 @@ var Inspector = (function () {
             return;
         if (n === '')
             return;
-        this.currentNode.Attributes.push(xdoc_1.XAttribute.Get(n, v));
+        if (this.currentNode) {
+            this.currentNode.Attributes.push(xdoc_1.XAttribute.Get(n, v));
+        }
     };
     Inspector.prototype.ignore = function () { };
     Inspector.prototype.truncateString = function (s) {

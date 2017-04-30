@@ -27,6 +27,8 @@ class Inspector implements IVisitor {
     }
 
     visitNode(node: IXNode) {
+        if (node.Name === '') return;
+
         let copy = this.copyNode(node);
 
         if (this.currentNode) {
@@ -46,6 +48,7 @@ class Inspector implements IVisitor {
         if (node.Children) {
             node.Children.forEach((c) => {
                 c.Accept(this);
+                this.currentNode = copy;
             });
         }
     }
@@ -55,6 +58,18 @@ class Inspector implements IVisitor {
     }
 
     visitText(text: IXText) {
+
+        let t = text.Text;
+
+        t = this.truncateString(t);
+
+        if (t.length === 0) return;
+
+        let copy = new XText(t);
+
+        if (this.currentNode) {
+            this.currentNode.Children.push(copy);
+        }
     }
 
     visitAttribute(attr: IXAttribute) {
@@ -68,9 +83,11 @@ class Inspector implements IVisitor {
         if (v === '') return;
         if (n === '') return;
 
-        this.currentNode.Attributes.push(
-            XAttribute.Get(n, v)
-        );
+        if (this.currentNode) {
+            this.currentNode.Attributes.push(
+                XAttribute.Get(n, v)
+            );
+        }
     }
 
     private ignore() {}

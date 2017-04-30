@@ -593,6 +593,11 @@ class Parser implements IParser, IStateManager {
     }
 }
 
+function parse(xml: string): IXDoc {
+    let parser: IParser = new Parser();
+    return parser.Parse(xml);
+}
+
 export {
     IAttributeAdder,
     ICommentsAdder,
@@ -611,5 +616,7 @@ export {
     PrologExpression,
     Parser,
     TextExpression,
-    Value
+    Value,
+
+    parse
 }

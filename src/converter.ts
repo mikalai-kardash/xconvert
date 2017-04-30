@@ -1,3 +1,5 @@
+import { JsObject, JsArray, JsProperty } from './jsdoc';
+
 interface IConverter {
     Convert(document:IXDoc): IJsObject;
 }
@@ -36,9 +38,7 @@ class CurrentObject implements ICurrentObject {
     SetItems(items: XItem[]): void {
         if (items.length == 0) return;
 
-        let arr: IJsArray = {
-            children: []
-        };
+        let arr = new JsArray();
 
         items.forEach((i) => {
             if ((<IXText>i).Text) {
@@ -59,11 +59,7 @@ class CurrentObject implements ICurrentObject {
             }
         });
 
-        let prop: IJsProperty = {
-            name: Properties.Items,
-            value: arr
-        };
-
+        let prop = new JsProperty(Properties.Items, arr);
         this.current.properties.push(prop);
     }
 
@@ -73,17 +69,12 @@ class CurrentObject implements ICurrentObject {
     }
 
     private newJsObject(): IJsObject {
-        return {
-            properties: []
-        };
+        return new JsObject();
     }
 
     private createProperty(name: string, value: string): IJsProperty {
         if ((!!value) && value.length > 0) {
-            return { 
-                name: name, 
-                value: value 
-            };
+            return new JsProperty(name, value);
         }
         return null;
     }
@@ -141,9 +132,7 @@ class Inspector implements IVisitor {
 
 class Converter implements IConverter {
     Convert(document: IXDoc): IJsObject {
-        let current: IJsObject = {
-            properties: <IJsProperty[]>[]
-        };
+        let current = new JsObject();
 
         let version = this.createProperty(Properties.Version, document.Version);
         let encoding = this.createProperty(Properties.Encoding, document.Encoding);
@@ -152,17 +141,14 @@ class Converter implements IConverter {
         if (encoding) current.properties.push(encoding);
         
         if (document.Root) {
-            let obj: IJsObject = {
-                properties: <IJsProperty[]>[]
-            };
+            let obj = new JsObject();
 
-            current.properties.push({
-                name: document.Root.Name,
-                value: obj,
-            });
+            current.properties.push(
+                new JsProperty(document.Root.Name, obj));
 
             document.Root.Accept(
-                <IVisitor>new Inspector(new CurrentObject(obj)));
+                <IVisitor>new Inspector(
+                    new CurrentObject(obj)));
         }
 
         return current;
@@ -170,13 +156,15 @@ class Converter implements IConverter {
 
     createProperty(name: string, value: string): IJsProperty {
         if ((!!value) && value.length > 0) {
-            return { 
-                name: name, 
-                value: value 
-            };
+            return new JsProperty(name, value);
         }
         return null;
     }
 }
 
-export { Converter, IConverter };
+function convert(xml: IXDoc): IJsObject {
+    let converter: IConverter = new Converter();
+    return converter.Convert(xml);
+}
+
+export { Converter, IConverter, convert };
