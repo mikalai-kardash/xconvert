@@ -458,6 +458,9 @@ var Parser = (function () {
                 case 'version':
                     xDoc.Version = a.Value;
                     break;
+                case 'encoding':
+                    xDoc.Encoding = a.Value;
+                    break;
             }
         });
         if (d.nodes.length !== 0) {

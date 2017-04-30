@@ -574,6 +574,10 @@ class Parser implements IParser, IStateManager {
                 case 'version':
                     xDoc.Version = a.Value;
                     break;
+                
+                case 'encoding':
+                    xDoc.Encoding = a.Value;
+                    break;
             }
         });
 

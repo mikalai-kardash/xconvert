@@ -4,6 +4,10 @@ import { SpecConfiguration } from './spec.config';
 
 var config = new SpecConfiguration();
 
+let normalize = (s: string) => {
+    return JSON.stringify(JSON.parse(s), null, 4);
+}
+
 describe('xconvert', () => {
 
     describe('empty XML file', () => {
@@ -33,6 +37,30 @@ describe('xconvert', () => {
     it('converts empty xml file into empty object', () => {
         var output = ConvertXmlToJS('');
         expect(output).toEqual('{}');
+    });
+
+    describe('real xml document conversion', () => {
+        let converted: string;
+        let expected: string;
+
+        beforeEach((done) => {
+            readFile(config.GetInput('real/packages')).then((xml) => {
+
+                converted = ConvertXmlToJS(xml);
+                converted = normalize(converted);
+
+                readFile(config.GetOutput('real/packages')).then((json) => {
+                    expected = normalize(json);
+
+                    done();
+                }, () => {});
+
+            }, () => {});
+        });
+
+        it('matches converted xml with expected output', () => {
+            expect(converted).toEqual(expected);
+        });
     });
 
 });

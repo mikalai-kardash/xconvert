@@ -164,6 +164,10 @@ describe("parser", () => {
                 }, () => {});
             });
 
+            it('should have encoding attribute', () => {
+                expect(xml.Encoding).toEqual('utf-8');
+            });
+
             it('should have comment', () => {
                 expect(xml.Comments.length).toEqual(1);
             });

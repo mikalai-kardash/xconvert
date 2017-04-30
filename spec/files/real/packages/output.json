@@ -1,0 +1,33 @@
+{
+    "@version": "1.0",
+    "@encoding": "utf-8",
+    "packages": {
+        "@name": "packages",
+        "@items": [
+            {
+                "@name": "package",
+                "id": "Selenium.WebDriver",
+                "version": "3.0.1",
+                "targetFramework": "net461"
+            },
+            {
+                "@name": "package",
+                "id": "SpecFlow",
+                "version": "2.1.0",
+                "targetFramework": "net461"
+            },
+            {
+                "@name": "package",
+                "id": "SpecRun.Runner",
+                "version": "1.5.2",
+                "targetFramework": "net461"
+            },
+            {
+                "@name": "package",
+                "id": "SpecRun.SpecFlow",
+                "version": "1.5.2",
+                "targetFramework": "net461"
+            }
+        ]
+    }
+}
