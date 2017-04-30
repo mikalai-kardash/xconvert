@@ -13,13 +13,14 @@ namespace Symbols {
     export const Equal  = '=';
     export const DoubleQuote = '"';
     export const Exclamation = '!';
+    export const SingleQuote = '\'';
 
     export const ForwardSlash = '/';
     export const BackwardSlash = '\\';
 }
 
 namespace Expressions {
-    export const NodeName = /\w/;    
+    export const NodeName = /[\w\:\-\.]+/;    
 }
 
 interface IState {
@@ -66,16 +67,27 @@ class Value implements IState {
 
     temp: string = '';
     count: number = 0;
+    startedWith: string = '';
 
     read(ch: string): void {
         switch (ch) {
+
+            case Symbols.SingleQuote:
             case Symbols.DoubleQuote:
+                if (this.count === 0) {
+                    this.startedWith = ch;
+                }
+
                 this.count ++;
-                if (this.count > 1) {
+                if (this.count > 1 && this.startedWith === ch) {
                     this.manager.switchTo(this.prev);
                     this.valueSetter.setValue(this.temp);
                     return;
                 }
+
+                if (this.startedWith !== ch) {
+                    this.temp += ch;
+                }                
                 break;
             
             default: {

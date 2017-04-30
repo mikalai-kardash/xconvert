@@ -39,7 +39,7 @@ describe('xconvert', () => {
         expect(output).toEqual('{}');
     });
 
-    describe('real xml document conversion', () => {
+    describe('real xml document conversion - packages', () => {
         let converted: string;
         let expected: string;
 
@@ -50,6 +50,31 @@ describe('xconvert', () => {
                 converted = normalize(converted);
 
                 readFile(config.GetOutput('real/packages')).then((json) => {
+                    expected = normalize(json);
+
+                    done();
+                }, () => {});
+
+            }, () => {});
+        });
+
+        it('matches converted xml with expected output', () => {
+            expect(converted).toEqual(expected);
+        });
+    });
+
+    
+    describe('real xml document conversion - android sdk list', () => {
+        let converted: string;
+        let expected: string;
+
+        beforeEach((done) => {
+            readFile(config.GetInput('real/android-sdk-list')).then((xml) => {
+
+                converted = ConvertXmlToJS(xml);
+                converted = normalize(converted);
+
+                readFile(config.GetOutput('real/android-sdk-list')).then((json) => {
                     expected = normalize(json);
 
                     done();

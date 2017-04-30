@@ -1,0 +1,59 @@
+{
+    "@version": "1.0",
+    "sdk:sdk-addons-list": {
+        "@name": "sdk:sdk-addons-list",
+        "xmlns:sdk": "http://schemas.android.com/sdk/android/addons-list/2",
+        "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+        "@items": [
+            {
+                "@name": "sdk:addon-site",
+                "@items": [
+                    { "@name": "sdk:name", "@text": "Google Inc." },
+                    { "@name": "sdk:url", "@text": "addon.xml" }
+                ]
+            },
+            {
+                "@name": "sdk:addon-site",
+                "@items": [
+                    { "@name": "sdk:name", "@text": "Glass Development Kit, Google Inc." },
+                    { "@name": "sdk:url", "@text": "glass/addon.xml" }
+                ]
+            },
+            {
+                "@name": "sdk:addon-site",
+                "@items": [
+                    { "@name": "sdk:name", "@text": "Intel HAXM" },
+                    { "@name": "sdk:url", "@text": "extras/intel/addon.xml" }
+                ]
+            },
+            {
+                "@name": "sdk:sys-img-site",
+                "@items": [
+                    { "@name": "sdk:name", "@text": "Android System Images" },
+                    { "@name": "sdk:url", "@text": "sys-img/android/sys-img.xml" }
+                ]
+            },
+            {
+                "@name": "sdk:sys-img-site",
+                "@items": [
+                    { "@name": "sdk:name", "@text": "Android Wear System Images" },
+                    { "@name": "sdk:url", "@text": "sys-img/android-wear/sys-img.xml" }
+                ]
+            },
+            {
+                "@name": "sdk:sys-img-site",
+                "@items": [
+                    { "@name": "sdk:name", "@text": "Android TV System Images" },
+                    { "@name": "sdk:url", "@text": "sys-img/android-tv/sys-img.xml" }
+                ]
+            },
+            {
+                "@name": "sdk:sys-img-site",
+                "@items": [
+                    { "@name": "sdk:name", "@text": "Google API add-on System Images" },
+                    { "@name": "sdk:url", "@text": "sys-img/google_apis/sys-img.xml" }
+                ]
+            }
+        ]
+    }
+}

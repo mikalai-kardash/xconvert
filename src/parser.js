@@ -10,12 +10,13 @@ var Symbols;
     Symbols.Equal = '=';
     Symbols.DoubleQuote = '"';
     Symbols.Exclamation = '!';
+    Symbols.SingleQuote = '\'';
     Symbols.ForwardSlash = '/';
     Symbols.BackwardSlash = '\\';
 })(Symbols || (Symbols = {}));
 var Expressions;
 (function (Expressions) {
-    Expressions.NodeName = /\w/;
+    Expressions.NodeName = /[\w\:\-\.]+/;
 })(Expressions || (Expressions = {}));
 var Value = (function () {
     function Value(manager, prev, valueSetter) {
@@ -24,15 +25,23 @@ var Value = (function () {
         this.valueSetter = valueSetter;
         this.temp = '';
         this.count = 0;
+        this.startedWith = '';
     }
     Value.prototype.read = function (ch) {
         switch (ch) {
+            case Symbols.SingleQuote:
             case Symbols.DoubleQuote:
+                if (this.count === 0) {
+                    this.startedWith = ch;
+                }
                 this.count++;
-                if (this.count > 1) {
+                if (this.count > 1 && this.startedWith === ch) {
                     this.manager.switchTo(this.prev);
                     this.valueSetter.setValue(this.temp);
                     return;
+                }
+                if (this.startedWith !== ch) {
+                    this.temp += ch;
                 }
                 break;
             default:

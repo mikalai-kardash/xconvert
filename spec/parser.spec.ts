@@ -335,6 +335,11 @@ describe("parser", () => {
             expect(attr.name).toEqual('abc');
         });
 
+        it('reads attribute name (with prefix)', () => {
+            run(manager, 'xmlns:h="http://www.w3.org/TR/html4/"');
+            expect(attr.name).toEqual('xmlns:h');
+        });
+
         it('reads attribute value', () => {
             run(manager, 'abc="xyz"');
             expect(attr.value).toEqual('xyz');
@@ -353,6 +358,21 @@ describe("parser", () => {
         it('sends \' \' symbol to previous state', () => {
             run(manager, 'abc="xyz" ');
             expect(prev.temp).toEqual(' ');
+        });
+
+        it('understand single quotes as well', () => {
+            run(manager, 'abc=\'xyz\'');
+            expect(attr.value).toEqual('xyz');
+        });
+
+        it('read value within single quotes properly', () => {
+            run(manager, 'abc=\'this "is" value\'');
+            expect(attr.value).toEqual('this "is" value');
+        });
+
+        it('reads value within double quotes properly', () => {
+            run(manager, 'abc="this \'is\' value"');
+            expect(attr.value).toEqual("this 'is' value");
         });
     });
 
@@ -420,6 +440,31 @@ describe("parser", () => {
         it('reads node name', () => {
             run(manager, 'name></name>');
             expect(node.name).toEqual('name');
+        });
+
+        it('reads node name (with prefix)', () => {
+            run(manager, 'h:name></h:name>');
+            expect(node.name).toEqual('h:name');
+        });
+
+        it('reads node name (with _)', () => {
+            run(manager, '_name></_name>');
+            expect(node.name).toEqual('_name');
+        });
+
+        it('reads node name (with digits)', () => {
+            run(manager, 'n9m3></n9m3>');
+            expect(node.name).toEqual('n9m3');
+        });
+
+        it('reads node name (with hyphen)', () => {
+            run(manager, 'first-name></first-name>');
+            expect(node.name).toEqual('first-name');
+        });
+
+        it('reads node name (with .)', () => {
+            run(manager, 'first.name></first.name>');
+            expect(node.name).toEqual('first.name');
         });
 
         it('switches back to previous state after closing tag', () => {
