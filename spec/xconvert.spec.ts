@@ -1,89 +1,94 @@
-import { convert as ConvertXmlToJS } from '../src/index';
-import { readFile } from './reader';
-import { SpecConfiguration } from './spec.config';
+import { convert as ConvertXmlToJS } from "../src/index";
+import { readFile } from "./reader";
+import { SpecConfiguration } from "./spec.config";
 
-var config = new SpecConfiguration();
+const config = new SpecConfiguration();
 
-let normalize = (s: string) => {
+const normalize = (s: string) => {
     return JSON.stringify(JSON.parse(s), null, 4);
-}
+};
 
-describe('xconvert', () => {
+describe("xconvert", () => {
 
-    describe('empty XML file', () => {
+    describe("empty XML file", () => {
 
         it("without XML header converts to empty object", (done) => {
             let input: string;
             let output: string;
-            let actual: string; 
-            
-            readFile(config.GetInput('empty/1')).then((result) => {
+            let actual: string;
+
+            readFile(config.GetInput("empty/1")).then((result) => {
                 input = result;
 
-                readFile(config.GetOutput('empty/1')).then((result) => {
-                    output = result;
+                readFile(config.GetOutput("empty/1")).then((o) => {
+                    output = o;
 
                     actual = ConvertXmlToJS(input);
-                    expect(actual).toEqual(output); 
+                    expect(actual).toEqual(output);
 
                     done();
 
+                // tslint:disable-next-line:no-empty
                 }, (err) => {});
+            // tslint:disable-next-line:no-empty
             }, (err) => {});
         });
 
     });
 
-    it('converts empty xml file into empty object', () => {
-        var output = ConvertXmlToJS('');
-        expect(output).toEqual('{}');
+    it("converts empty xml file into empty object", () => {
+        const output = ConvertXmlToJS("");
+        expect(output).toEqual("{}");
     });
 
-    describe('real xml document conversion - packages', () => {
+    describe("real xml document conversion - packages", () => {
         let converted: string;
         let expected: string;
 
         beforeEach((done) => {
-            readFile(config.GetInput('real/packages')).then((xml) => {
+            readFile(config.GetInput("real/packages")).then((xml) => {
 
                 converted = ConvertXmlToJS(xml);
                 converted = normalize(converted);
 
-                readFile(config.GetOutput('real/packages')).then((json) => {
+                readFile(config.GetOutput("real/packages")).then((json) => {
                     expected = normalize(json);
 
                     done();
+                // tslint:disable-next-line:no-empty
                 }, () => {});
 
+            // tslint:disable-next-line:no-empty
             }, () => {});
         });
 
-        it('matches converted xml with expected output', () => {
+        it("matches converted xml with expected output", () => {
             expect(converted).toEqual(expected);
         });
     });
 
-    
-    describe('real xml document conversion - android sdk list', () => {
+    describe("real xml document conversion - android sdk list", () => {
         let converted: string;
         let expected: string;
 
         beforeEach((done) => {
-            readFile(config.GetInput('real/android-sdk-list')).then((xml) => {
+            readFile(config.GetInput("real/android-sdk-list")).then((xml) => {
 
                 converted = ConvertXmlToJS(xml);
                 converted = normalize(converted);
 
-                readFile(config.GetOutput('real/android-sdk-list')).then((json) => {
+                readFile(config.GetOutput("real/android-sdk-list")).then((json) => {
                     expected = normalize(json);
 
                     done();
+                // tslint:disable-next-line:no-empty
                 }, () => {});
 
+            // tslint:disable-next-line:no-empty
             }, () => {});
         });
 
-        it('matches converted xml with expected output', () => {
+        it("matches converted xml with expected output", () => {
             expect(converted).toEqual(expected);
         });
     });

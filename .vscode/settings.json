@@ -7,7 +7,8 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/*.js" : { "when": "$(basename).ts" },
-        "**/*.js.map": true
+        "**/*.js.map": true,
+        "node_modules": true
     },
     "typescript.referencesCodeLens.enabled": true
 }

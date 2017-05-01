@@ -1,15 +1,15 @@
 class SpecConfiguration {
-    FilesPath = './spec/files/';
+    public FilesPath = "./spec/files/";
 
-    public GetInput(container:string):string {
+    public GetInput(container: string): string {
         return `${this.FilesPath}${container}/input.xml`;
     }
 
-    public GetOutput(container:string): string {
+    public GetOutput(container: string): string {
         return `${this.FilesPath}${container}/output.json`;
     }
 }
 
 export {
-    SpecConfiguration
-}
+    SpecConfiguration,
+};
