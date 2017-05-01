@@ -1,113 +1,113 @@
-import { stringify } from '../src/stringifier';
-import { JsObject, JsProperty, JsArray } from '../src/jsdoc';
+import { JsArray, JsObject, JsProperty } from "../src/js/schema";
+import { stringify } from "../src/process/stringify/stringifier";
 
-describe('stringifier', () => {
+describe("stringifier", () => {
 
-    describe('incorrect values', () => {
-        
-        it('null', () => {
-            let out = stringify(null);
+    describe("incorrect values", () => {
+
+        it("null", () => {
+            const out = stringify(null);
             expect(out).toEqual(JSON.stringify(null));
         });
 
-        it('undefined', () => {
-            let out = stringify(undefined);
+        it("undefined", () => {
+            const out = stringify(undefined);
             expect(out).toEqual(JSON.stringify(undefined));
         });
 
     });
 
-    describe('empty js object', () => {
+    describe("empty js object", () => {
 
         let str: string;
 
         beforeEach(() => {
-            let js = new JsObject();
+            const js = new JsObject();
             str = stringify(js);
         });
 
-        it('creates empty object literal', () => {
-            expect(str).toEqual('{}');
+        it("creates empty object literal", () => {
+            expect(str).toEqual("{}");
         });
 
     });
 
-    describe('js object', () => {
+    describe("js object", () => {
         let str: string;
         let json;
 
         beforeEach(() => {
-            let js: IJsObject = new JsObject();
-            let obj: IJsObject = new JsObject();
-            let arr: IJsArray = new JsArray();
+            const js: IJsObject = new JsObject();
+            const obj: IJsObject = new JsObject();
+            const arr: IJsArray = new JsArray();
 
             js.properties = [
-                new JsProperty('name', 'unity'),
-                new JsProperty('object', obj),
-                new JsProperty('array', arr)
+                new JsProperty("name", "unity"),
+                new JsProperty("object", obj),
+                new JsProperty("array", arr),
             ];
 
             str = stringify(js);
             json = JSON.parse(str);
         });
 
-        it('has name property', () => {
+        it("has name property", () => {
             expect(json.name).toBeDefined();
             expect(json.name).not.toBeNull();
         });
 
-        it('has object property', () => {
+        it("has object property", () => {
             expect(json.object).toBeDefined();
-            expect(json.object).not.toBeNull();            
+            expect(json.object).not.toBeNull();
         });
 
-        it('has array property', () => {
+        it("has array property", () => {
             expect(json.array).toBeDefined();
             expect(json.array).not.toBeNull();
             expect(json.array.length).toEqual(0);
         });
     });
 
-    describe('js array', () => {
+    describe("js array", () => {
 
         let str: string;
         let json;
 
         beforeEach(() => {
-            let js = new JsArray();
-            let o = new JsObject();
+            const js = new JsArray();
+            const o = new JsObject();
 
             o.properties = [
-                new JsProperty('name', 'unity')
+                new JsProperty("name", "unity"),
             ];
 
             js.children = [
                 "some text",
-                o
+                o,
             ];
 
             str = stringify(js);
             json = JSON.parse(str);
         });
 
-        it('not null', () => {
+        it("not null", () => {
             expect(json).toBeDefined();
             expect(json).not.toBeNull();
         });
 
-        it('has items', () => {
+        it("has items", () => {
             expect(json.length).toBeGreaterThan(0);
         });
 
-        it('contains text', () => {
-            expect(json[0]).toEqual('some text');
+        it("contains text", () => {
+            expect(json[0]).toEqual("some text");
         });
 
-        it('contains object', () => {
-            let o = json[1];
+        it("contains object", () => {
+            const o = json[1];
             expect(o).toBeDefined();
             expect(o).not.toBeNull();
-            expect(o.name).toEqual('unity');
+            expect(o.name).toEqual("unity");
         });
 
     });
