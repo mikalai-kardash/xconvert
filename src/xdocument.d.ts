@@ -27,13 +27,11 @@ interface IXComment extends IVisitable {
 
 interface IXNode extends IVisitable {
     Name: string;
-
     Attributes?: IXAttribute[];
-    Children?: (IXNode | IXText | IXComment ) [];
+    Children?: Array<IXNode | IXText | IXComment>;
 }
 
 interface IXAttribute extends IVisitable {
     Name: string;
     Value: string;
 }
-

@@ -5,7 +5,7 @@ interface IJsVisitor {
 }
 
 interface IJsVisitable {
-    Accept(visitor:IJsVisitor);
+    Accept(visitor: IJsVisitor);
 }
 
 interface IJsObject extends IJsVisitable {
@@ -18,5 +18,5 @@ interface IJsProperty extends IJsVisitable {
 }
 
 interface IJsArray extends IJsVisitable {
-    children: (string | IJsObject)[];
+    children: Array<string | IJsObject>;
 }

@@ -8,5 +8,6 @@
         "**/.DS_Store": true,
         "**/*.js" : { "when": "$(basename).ts" },
         "**/*.js.map": true
-    }
+    },
+    "typescript.referencesCodeLens.enabled": true
 }

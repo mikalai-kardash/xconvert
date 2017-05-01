@@ -1,30 +1,22 @@
-import { 
-    Parser, 
-    Name, 
-    IStateManager, 
-    IState, 
-    IAttributeAdder, 
-    INameSetter, 
-    INodeAdder,
-    Value, 
-    IValueSetter, 
-    AttributeExpression, 
+import {
+    AttributeExpression,
+    CommentExpression,
+    Name,
+    NodeExpression,
+    Parser,
     PrologExpression,
     TextExpression,
-    NodeExpression,
-    ITextAdder,
-    CommentExpression,
-    ICommentsAdder
-} from '../src/parser';
+    Value,
+} from "../src/parser";
 
-import { readFile } from './reader';
-import { SpecConfiguration } from './spec.config';
+import { readFile } from "./reader";
+import { SpecConfiguration } from "./spec.config";
 
-let config = new SpecConfiguration();
+const config = new SpecConfiguration();
 
 class TestStateManager implements IStateManager {
-    current: IState;
-    position: number = 0;
+    public current: IState;
+    public position: number = 0;
 
     switchTo(state: IState): void {
         this.current = state;
