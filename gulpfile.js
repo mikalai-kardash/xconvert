@@ -45,14 +45,18 @@ function compileTests() {
 function csSource() {
     return gulp
         .src('./src/**/*.ts')
-        .pipe(tslint())
+        .pipe(tslint({
+            formatter: "prose"
+        }))
         .pipe(tslint.report());
 }
 
 function csTests() {
     return gulp
         .src('./spec/**/*.ts')
-        .pipe(tslint())
+        .pipe(tslint({
+            formatter: "prose"
+        }))
         .pipe(tslint.report());    
 }
 
