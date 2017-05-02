@@ -12,4 +12,5 @@ function convert(content) {
     return str;
 }
 exports.convert = convert;
+
 //# sourceMappingURL=index.js.map

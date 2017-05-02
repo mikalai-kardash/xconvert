@@ -5,4 +5,5 @@ exports.Version = "@version";
 exports.Encoding = "@encoding";
 exports.Items = "@items";
 exports.Name = "@name";
+
 //# sourceMappingURL=properties.js.map

@@ -30,4 +30,5 @@ var JsPropertyVisitor = (function () {
     return JsPropertyVisitor;
 }());
 exports.default = JsPropertyVisitor;
+
 //# sourceMappingURL=jsproperty.visitor.js.map

@@ -13,4 +13,5 @@ var XDoc = (function () {
     return XDoc;
 }());
 exports.default = XDoc;
+
 //# sourceMappingURL=xdoc.js.map

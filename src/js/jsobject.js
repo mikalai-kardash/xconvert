@@ -10,4 +10,5 @@ var JsObject = (function () {
     return JsObject;
 }());
 exports.default = JsObject;
+
 //# sourceMappingURL=jsobject.js.map

@@ -10,4 +10,5 @@ var JsArray = (function () {
     return JsArray;
 }());
 exports.default = JsArray;
+
 //# sourceMappingURL=jsarray.js.map

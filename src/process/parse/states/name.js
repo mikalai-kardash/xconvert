@@ -23,4 +23,5 @@ var Name = (function () {
     return Name;
 }());
 exports.default = Name;
+
 //# sourceMappingURL=name.js.map

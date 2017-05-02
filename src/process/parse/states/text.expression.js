@@ -27,4 +27,5 @@ var TextExpression = (function () {
     return TextExpression;
 }());
 exports.default = TextExpression;
+
 //# sourceMappingURL=text.expression.js.map

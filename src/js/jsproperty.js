@@ -11,4 +11,5 @@ var JsProperty = (function () {
     return JsProperty;
 }());
 exports.default = JsProperty;
+
 //# sourceMappingURL=jsproperty.js.map

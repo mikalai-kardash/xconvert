@@ -12,4 +12,5 @@ var XNode = (function () {
     return XNode;
 }());
 exports.default = XNode;
+
 //# sourceMappingURL=xnode.js.map

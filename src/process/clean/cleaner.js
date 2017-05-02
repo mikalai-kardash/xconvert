@@ -17,4 +17,5 @@ function clean(xml) {
     return cleaner.clean(xml);
 }
 exports.clean = clean;
+
 //# sourceMappingURL=cleaner.js.map

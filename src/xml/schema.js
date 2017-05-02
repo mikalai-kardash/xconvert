@@ -10,4 +10,5 @@ var xnode_1 = require("./xnode");
 exports.XNode = xnode_1.default;
 var xtext_1 = require("./xtext");
 exports.XText = xtext_1.default;
+
 //# sourceMappingURL=schema.js.map

@@ -46,4 +46,5 @@ var Inspector = (function () {
     return Inspector;
 }());
 exports.default = Inspector;
+
 //# sourceMappingURL=inspector.js.map

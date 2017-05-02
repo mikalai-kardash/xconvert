@@ -38,4 +38,5 @@ function convert(xml) {
     return converter.Convert(xml);
 }
 exports.convert = convert;
+
 //# sourceMappingURL=converter.js.map

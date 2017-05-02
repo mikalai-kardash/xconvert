@@ -16,4 +16,5 @@ var XAttribute = (function () {
     return XAttribute;
 }());
 exports.default = XAttribute;
+
 //# sourceMappingURL=xattribute.js.map

@@ -59,4 +59,5 @@ var CurrentObject = (function () {
     return CurrentObject;
 }());
 exports.CurrentObject = CurrentObject;
+
 //# sourceMappingURL=current.object.js.map

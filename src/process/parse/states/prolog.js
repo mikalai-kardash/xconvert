@@ -59,4 +59,5 @@ var PrologExpression = (function () {
     return PrologExpression;
 }());
 exports.default = PrologExpression;
+
 //# sourceMappingURL=prolog.js.map

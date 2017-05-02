@@ -61,4 +61,5 @@ var Writer = (function () {
     return Writer;
 }());
 exports.Writer = Writer;
+
 //# sourceMappingURL=writer.js.map

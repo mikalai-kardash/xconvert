@@ -23,4 +23,5 @@ function stringify(js) {
     return s.Stringify(js);
 }
 exports.stringify = stringify;
+
 //# sourceMappingURL=stringifier.js.map

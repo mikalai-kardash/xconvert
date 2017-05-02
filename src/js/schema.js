@@ -6,4 +6,5 @@ var jsobject_1 = require("./jsobject");
 exports.JsObject = jsobject_1.default;
 var jsproperty_1 = require("./jsproperty");
 exports.JsProperty = jsproperty_1.default;
+
 //# sourceMappingURL=schema.js.map

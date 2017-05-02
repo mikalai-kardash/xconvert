@@ -10,4 +10,5 @@ var XComment = (function () {
     return XComment;
 }());
 exports.default = XComment;
+
 //# sourceMappingURL=xcomment.js.map

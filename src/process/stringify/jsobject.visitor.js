@@ -19,4 +19,5 @@ var JsObjectVisitor = (function () {
     return JsObjectVisitor;
 }());
 exports.default = JsObjectVisitor;
+
 //# sourceMappingURL=jsobject.visitor.js.map
