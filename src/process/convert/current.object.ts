@@ -80,4 +80,5 @@ class CurrentObject implements ICurrentObject {
 export {
     CurrentObject,
     ICurrentObject,
+    XItem,
 };

@@ -28,6 +28,7 @@
     "jasmine": "^2.6.0",
     "jasmine-reporters": "^2.2.1",
     "jasmine-spec-reporter": "^4.1.0",
+    "merge2": "^1.0.3",
     "tslint": "^5.1.0",
     "typescript": "^2.2.2",
     "typings": "^2.1.1"

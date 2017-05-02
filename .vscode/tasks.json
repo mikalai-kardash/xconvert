@@ -24,6 +24,27 @@
                         "message": 5
                 }
             }
+        },
+        {
+            "taskName": "compile-source",
+            "problemMatcher": {
+                "base": "$tsc",
+                "owner": "gulp"
+            }
+        },
+        {
+            "taskName": "compile-tests",
+            "problemMatcher": {
+                "base": "$tsc",
+                "owner": "gulp"
+            }
+        },
+        {
+            "taskName": "compile",
+            "problemMatcher": {
+                "base": "$tsc",
+                "owner": "gulp"
+            }
         }
     ]
 }

@@ -12,15 +12,20 @@ var sources = tsc.createProject('tsconfig.json');
 var tests = tsc.createProject('tsconfig.json');
 
 function compileSource() {
+    // var merge = require('merge2');
     var result = gulp
         .src('./src/**/*.ts')
         .pipe(sourcemaps.init())
         .pipe(sources());
 
-    return result
+    var js = result
         .js
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./src/'));
+
+    // var d = result.dts.pipe(gulp.dest('./lib/'));
+    return js;
+    // return merge(js, d);
 }
 
 function compileTests() {
