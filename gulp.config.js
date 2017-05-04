@@ -1,4 +1,5 @@
 var SpecReporter = require('jasmine-spec-reporter').SpecReporter;
+var reporters = require('jasmine-reporters');
 
 module.exports = function () {
     var tsFiles = '**/*.ts';
@@ -32,11 +33,18 @@ module.exports = function () {
                 "all": [ tests + "**/*.spec.js" ]
             },
             "jasmine": {
-                "reporter": new SpecReporter({
-                    "spec": {
-                        "displayPending": true
-                    }
-                })
+                "default": {
+                    "reporter": new SpecReporter({
+                        "spec": {
+                            "displayPending": true
+                        }
+                    })
+                },
+                "watch": {
+                    "reporter": new reporters.TerminalReporter({
+                        "verbosity": 1
+                    })
+                }
             },
             "filter": [ "spec/**/*.*" ],
             "dir": tests,

@@ -73,7 +73,7 @@ function csTests() {
 function runTests() {
     return gulp
         .src(config.tests.specs.all)
-        .pipe(jasmine(config.tests.jasmine));
+        .pipe(jasmine(config.tests.jasmine.default));
 }
 
 gulp.task('cs-src', csSource);
@@ -103,8 +103,14 @@ function csSourceWatch() {
         .pipe(tslint.report());
 }
 
+function runTestsWatch() {
+    return gulp
+        .src(config.tests.specs.all)
+        .pipe(jasmine(config.tests.jasmine.watch));
+}
+
 function watchSources(done) {
-    return watcher(csSourceWatch, compileSourceWatch);
+    return watcher(csSourceWatch, compileSourceWatch, runTestsWatch);
 }
 
 function watch() {
