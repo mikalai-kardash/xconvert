@@ -8,6 +8,7 @@ var reporters = require('jasmine-reporters');
 var SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 var print = require('gulp-print');
 var util = require('gulp-util');
+var merge = require('merge2');
 var config = require('./gulp.config')();
 
 var sources = tsc.createProject(config.project);
@@ -71,6 +72,17 @@ function csSourceWatch() {
         }));
 }
 
+function compileSourceWatch() {
+    return gulp
+        .src(config.sources.files.all)
+        .pipe(sourcemaps.init())
+        .pipe(sources())
+        //.result
+        .js
+        .pipe(sourcemaps.write(config.sources.maps))
+        .pipe(gulp.dest(config.sources.dest));
+}
+
 function csTests() {
     return gulp
         .src(config.tests.files.all)
@@ -85,7 +97,7 @@ function runTests() {
 }
 
 function watch() {
-    gulp.watch(config.sources.files.all, csSourceWatch);
+    gulp.watch(config.sources.files.all, gulp.series('w-code-style', 'w-compile'));
 }
 
 gulp.task('cs-src', csSource);
@@ -98,4 +110,6 @@ gulp.task('compile', gulp.parallel('compile-source', 'compile-tests'));
 
 gulp.task('test', gulp.series('compile', runTests));
 
+gulp.task('w-code-style', csSourceWatch);
+gulp.task('w-compile', gulp.series('w-code-style', compileSourceWatch));
 gulp.task('w', watch);
