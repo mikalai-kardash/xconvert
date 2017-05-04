@@ -8,6 +8,12 @@ var reporters = require('jasmine-reporters');
 var SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 var print = require('gulp-print');
 var util = require('gulp-util');
+var plumber = require('gulp-plumber');
+var es = require('event-stream');
+var miss = require('mississippi');
+var merge = require('merge-stream');
+var watcher = require('./build/watcher');
+
 var config = require('./gulp.config')();
 
 var sources = tsc.createProject(config.project);
@@ -57,20 +63,6 @@ function csSource() {
         .pipe(tslint.report());
 }
 
-function swallow(error) {
-    util.log('sw ' + error);
-    this.emit('end');
-}
-
-function csSourceWatch() {
-    return gulp
-        .src(config.sources.files.all, { since: gulp.lastRun(csSourceWatch) })
-        .pipe(tslint(config.tslint))
-        .pipe(tslint.report({
-            emitError: false
-        }));
-}
-
 function csTests() {
     return gulp
         .src(config.tests.files.all)
@@ -84,10 +76,6 @@ function runTests() {
         .pipe(jasmine(config.tests.jasmine));
 }
 
-function watch() {
-    gulp.watch(config.sources.files.all, csSourceWatch);
-}
-
 gulp.task('cs-src', csSource);
 gulp.task('cs-tests', csTests);
 gulp.task('cs', gulp.parallel(csSource, csTests));
@@ -97,5 +85,30 @@ gulp.task('compile-tests', gulp.series(csTests, compileTests));
 gulp.task('compile', gulp.parallel('compile-source', 'compile-tests'));
 
 gulp.task('test', gulp.series('compile', runTests));
+
+function compileSourceWatch() {
+    return gulp
+        .src(config.sources.files.all, { since: gulp.lastRun(compileSourceWatch)})
+        .pipe(sourcemaps.init())
+        .pipe(sources())
+        .js
+        .pipe(sourcemaps.write(config.sources.maps))
+        .pipe(gulp.dest(config.sources.dest));
+}
+
+function csSourceWatch() {
+    return gulp
+        .src(config.sources.files.all, { since: gulp.lastRun(csSourceWatch) })
+        .pipe(tslint(config.tslint))
+        .pipe(tslint.report());
+}
+
+function watchSources(done) {
+    return watcher(csSourceWatch, compileSourceWatch);
+}
+
+function watch() {
+    gulp.watch(config.sources.files.all, watchSources);
+}
 
 gulp.task('w', watch);
