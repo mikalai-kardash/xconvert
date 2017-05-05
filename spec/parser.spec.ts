@@ -32,7 +32,7 @@ describe("parser", () => {
         const read = (name: string, done: DoneFn, doneXml: DoneXml) => {
             readFile(config.GetInput(`simple/${name}`)).then((content) => {
                 const parser = new Parser();
-                const xml = parser.Parse(content);
+                const xml = parser.Parse(content as string);
 
                 doneXml(xml);
                 done();
@@ -46,7 +46,7 @@ describe("parser", () => {
             beforeEach((done) => {
                 readFile(config.GetInput("simple/1")).then((content) => {
                     const parser = new Parser();
-                    xml = parser.Parse(content);
+                    xml = parser.Parse(content as string);
 
                     done();
                 // tslint:disable-next-line:no-empty
@@ -76,7 +76,7 @@ describe("parser", () => {
             beforeEach((done) => {
                 readFile(config.GetInput("simple/2")).then((content) => {
                     const parser = new Parser();
-                    xml = parser.Parse(content);
+                    xml = parser.Parse(content as string);
 
                     done();
                 // tslint:disable-next-line:no-empty

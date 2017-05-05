@@ -18,10 +18,10 @@ describe("xconvert", () => {
             let actual: string;
 
             readFile(config.GetInput("empty/1")).then((result) => {
-                input = result;
+                input = result as string;
 
                 readFile(config.GetOutput("empty/1")).then((o) => {
-                    output = o;
+                    output = o as string;
 
                     actual = ConvertXmlToJS(input);
                     expect(actual).toEqual(output);
@@ -48,11 +48,11 @@ describe("xconvert", () => {
         beforeEach((done) => {
             readFile(config.GetInput("real/packages")).then((xml) => {
 
-                converted = ConvertXmlToJS(xml);
+                converted = ConvertXmlToJS(xml as string);
                 converted = normalize(converted);
 
                 readFile(config.GetOutput("real/packages")).then((json) => {
-                    expected = normalize(json);
+                    expected = normalize(json as string);
 
                     done();
                 // tslint:disable-next-line:no-empty
@@ -74,11 +74,11 @@ describe("xconvert", () => {
         beforeEach((done) => {
             readFile(config.GetInput("real/android-sdk-list")).then((xml) => {
 
-                converted = ConvertXmlToJS(xml);
+                converted = ConvertXmlToJS(xml as string);
                 converted = normalize(converted);
 
                 readFile(config.GetOutput("real/android-sdk-list")).then((json) => {
-                    expected = normalize(json);
+                    expected = normalize(json as string);
 
                     done();
                 // tslint:disable-next-line:no-empty
