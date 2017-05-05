@@ -12,6 +12,7 @@ var plumber = require('gulp-plumber');
 var es = require('event-stream');
 var miss = require('mississippi');
 var merge = require('merge-stream');
+var stream = require('streamqueue');
 var watcher = require('./build/watcher');
 
 var config = require('./gulp.config')();
@@ -96,11 +97,33 @@ function compileSourceWatch() {
         .pipe(gulp.dest(config.sources.dest));
 }
 
+function compileTestsWatch() {
+    var specs = filter(config.tests.filter);
+
+    return stream({ objectMode: true }, 
+            gulp.src(config.tests.files.all, { since: gulp.lastRun(compileSourceWatch) }),
+            gulp.src(config.sources.files.all),
+            gulp.src(config.typings))
+        .pipe(sourcemaps.init())
+        .pipe(tests())
+        .js
+        .pipe(specs)
+        .pipe(sourcemaps.write(config.tests.maps))
+        .pipe(gulp.dest(config.tests.dest));
+}
+
 function csSourceWatch() {
     return gulp
         .src(config.sources.files.all, { since: gulp.lastRun(csSourceWatch) })
         .pipe(tslint(config.tslint))
         .pipe(tslint.report());
+}
+
+function csTestsWatch() {
+    return gulp
+        .src(config.tests.files.all, { since: gulp.lastRun(csSourceWatch) })
+        .pipe(tslint(config.tslint))
+        .pipe(tslint.report());    
 }
 
 function runTestsWatch() {
@@ -109,12 +132,17 @@ function runTestsWatch() {
         .pipe(jasmine(config.tests.jasmine.watch));
 }
 
-function watchSources(done) {
+function watchSources() {
     return watcher(csSourceWatch, compileSourceWatch, runTestsWatch);
+}
+
+function watchTests() {
+    return watcher(csTestsWatch, compileTestsWatch, runTests);
 }
 
 function watch() {
     gulp.watch(config.sources.files.all, watchSources);
+    gulp.watch(config.tests.files.all, watchTests);
 }
 
 gulp.task('w', watch);
