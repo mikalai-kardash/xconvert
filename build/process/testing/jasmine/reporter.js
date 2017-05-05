@@ -1,5 +1,7 @@
 var util = require('gulp-util');
 
+let siteExpression = /\(([\w\:\\\.]+)\:(\d+)\:(\d+)\)/i;
+
 let getSite = (trace) => {
     let source = trace.filter(spot => {
         if (spot.indexOf && spot.indexOf('jasmine.js') < 0) {
@@ -9,10 +11,16 @@ let getSite = (trace) => {
     });
 
     if (source.length && source.length > 1) {
-        return source[1];
+        let match = source[1].match(siteExpression);
+
+        return [
+            match[1],
+            match[2],
+            match[3]
+        ].join(':');
     }
 
-    return 'unknown:0:0';
+    return 'unknown.js:1:1';
 };
 
 let reportError = (fail) => {
@@ -34,18 +42,13 @@ let reportErrorList = (fails) => {
 class Reporter {
     jasmineStarted(jasmineInfo) {
         this.started = new Date();
-
         // .totalSpecsDefined
-        //util.log('jasmine started')
-        util.log(jasmineInfo);
     }
 
     jasmineDone(jasmineResult) {
         this.finished = new Date();
-
         // .order { random, seed, sort }
         // .failedexpectations []
-        //util.log('jasmine done')
         reportErrorList(jasmineResult.failedExpectations);
     }
 
@@ -54,7 +57,6 @@ class Reporter {
         // .description
         // .fullName
         // .failedExpectations []
-        //util.log('suite started')
         reportErrorList(suiteInfo.failedExpectations);
     }
 
@@ -64,7 +66,6 @@ class Reporter {
         // .fullName
         // .failedExpectations []
         // .status
-        //util.log('suite done')
         reportErrorList(suiteResult.failedExpectations);
     }
 
@@ -75,9 +76,7 @@ class Reporter {
         // .failedExpectations [] { matcherName, message, stack, passed, expected, actual }
         // .passedExpectations [] { matcherName, message, stack, passed }
         // .pendingReason
-        //util.log('spec started')
         reportErrorList(specInfo.failedExpectations);
-        //util.log(specInfo.passedExpectations);
     }
 
     specDone(specResult) {
@@ -88,9 +87,7 @@ class Reporter {
         // .passedExpectations [] { matcherName, message, stack, passed }
         // .pendingReason
         // .status
-        //util.log('spec done')
         reportErrorList(specResult.failedExpectations);
-        //util.log(specResult.passedExpectations);
     }
 }
 

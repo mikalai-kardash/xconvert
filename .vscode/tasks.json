@@ -1,6 +1,4 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
     "version": "0.1.0",
     "command": "gulp",
     "isShellCommand": true,
@@ -44,6 +42,21 @@
             "problemMatcher": {
                 "base": "$tsc",
                 "owner": "gulp"
+            }
+        },
+        {
+            "taskName": "test",
+            "problemMatcher": {
+                "owner": "gulp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "(ERROR): ([\\w\\:\\\\.]+)\\:(\\d+)\\:(\\d+): ([\\w\\s\\'\\.]+)",
+                    "severity": 1,
+                    "file": 2,
+                    "line": 3,
+                    "column": 4,
+                    "message": 5
+                }
             }
         }
     ]
