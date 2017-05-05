@@ -1,4 +1,5 @@
 var SpecReporter = require('jasmine-spec-reporter').SpecReporter;
+var reporter = require('./build/process/testing/jasmine/reporter');
 var reporters = require('jasmine-reporters');
 
 module.exports = function () {
@@ -44,6 +45,9 @@ module.exports = function () {
                     "reporter": new reporters.TerminalReporter({
                         "verbosity": 1
                     })
+                },
+                "custom": {
+                    "reporter": reporter()
                 }
             },
             "filter": [ "spec/**/*.*" ],

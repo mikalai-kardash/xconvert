@@ -73,7 +73,7 @@ function csTests() {
 function runTests() {
     return gulp
         .src(config.tests.specs.all)
-        .pipe(jasmine(config.tests.jasmine.default));
+        .pipe(jasmine(config.tests.jasmine.custom));
 }
 
 gulp.task('cs-src', csSource);

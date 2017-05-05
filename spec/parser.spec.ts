@@ -58,7 +58,7 @@ describe("parser", () => {
             });
 
             it("version is read correctly", () => {
-                expect(xml.Version).toEqual("1.0");
+                expect(xml.Version).toEqual("1.1");
             });
 
             it("has a root", () => {
