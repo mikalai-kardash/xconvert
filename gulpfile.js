@@ -8,7 +8,12 @@ var reporters = require('jasmine-reporters');
 var SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 var print = require('gulp-print');
 var util = require('gulp-util');
-var merge = require('merge2');
+var plumber = require('gulp-plumber');
+var es = require('event-stream');
+var miss = require('mississippi');
+var merge = require('merge-stream');
+var watcher = require('./build/watcher');
+
 var config = require('./gulp.config')();
 
 var sources = tsc.createProject(config.project);
@@ -58,31 +63,6 @@ function csSource() {
         .pipe(tslint.report());
 }
 
-function swallow(error) {
-    util.log('sw ' + error);
-    this.emit('end');
-}
-
-function csSourceWatch() {
-    return gulp
-        .src(config.sources.files.all, { since: gulp.lastRun(csSourceWatch) })
-        .pipe(tslint(config.tslint))
-        .pipe(tslint.report({
-            emitError: false
-        }));
-}
-
-function compileSourceWatch() {
-    return gulp
-        .src(config.sources.files.all)
-        .pipe(sourcemaps.init())
-        .pipe(sources())
-        //.result
-        .js
-        .pipe(sourcemaps.write(config.sources.maps))
-        .pipe(gulp.dest(config.sources.dest));
-}
-
 function csTests() {
     return gulp
         .src(config.tests.files.all)
@@ -93,11 +73,7 @@ function csTests() {
 function runTests() {
     return gulp
         .src(config.tests.specs.all)
-        .pipe(jasmine(config.tests.jasmine));
-}
-
-function watch() {
-    gulp.watch(config.sources.files.all, gulp.series('w-code-style', 'w-compile'));
+        .pipe(jasmine(config.tests.jasmine.custom));
 }
 
 gulp.task('cs-src', csSource);
@@ -110,6 +86,35 @@ gulp.task('compile', gulp.parallel('compile-source', 'compile-tests'));
 
 gulp.task('test', gulp.series('compile', runTests));
 
-gulp.task('w-code-style', csSourceWatch);
-gulp.task('w-compile', gulp.series('w-code-style', compileSourceWatch));
+function compileSourceWatch() {
+    return gulp
+        .src(config.sources.files.all, { since: gulp.lastRun(compileSourceWatch)})
+        .pipe(sourcemaps.init())
+        .pipe(sources())
+        .js
+        .pipe(sourcemaps.write(config.sources.maps))
+        .pipe(gulp.dest(config.sources.dest));
+}
+
+function csSourceWatch() {
+    return gulp
+        .src(config.sources.files.all, { since: gulp.lastRun(csSourceWatch) })
+        .pipe(tslint(config.tslint))
+        .pipe(tslint.report());
+}
+
+function runTestsWatch() {
+    return gulp
+        .src(config.tests.specs.all)
+        .pipe(jasmine(config.tests.jasmine.watch));
+}
+
+function watchSources(done) {
+    return watcher(csSourceWatch, compileSourceWatch, runTestsWatch);
+}
+
+function watch() {
+    gulp.watch(config.sources.files.all, watchSources);
+}
+
 gulp.task('w', watch);
