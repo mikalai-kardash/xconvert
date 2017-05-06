@@ -6,8 +6,6 @@ var sourcemaps = require('gulp-sourcemaps');
 var jasmine = require('gulp-jasmine');
 var print = require('gulp-print');
 var util = require('gulp-util');
-var es = require('event-stream');
-var merge = require('merge-stream');
 var stream = require('streamqueue');
 var watcher = require('./build/watcher');
 
