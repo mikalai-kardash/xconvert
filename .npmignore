@@ -1,7 +1,9 @@
 .git
 .npmrc
 .gitignore
+.vscode
 *.ts
+*.js.map
 
 npm-debug.log
 
