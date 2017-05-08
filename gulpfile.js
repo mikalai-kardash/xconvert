@@ -133,3 +133,59 @@ function watch() {
 }
 
 gulp.task('w', watch);
+
+function styleCheck(file) {
+    return gulp
+        .src(file)
+        .pipe(tslint(config.tslint))
+        .pipe(tslint.report());
+}
+
+function tranclucate(file) {
+    var path = require('path');
+    var dir = path.dirname(file);
+    
+    return gulp
+        .src(file)
+        .pipe(sourcemaps.init())
+        .pipe(sources())
+        .js
+        .pipe(sourcemaps.write(config.sources.maps))
+        .pipe(gulp.dest(dir));
+}
+
+function precisely() {
+    var anymatch = require('anymatch');
+    var parserFiles = [
+        "src/process/parse/**/*.ts"
+    ];
+    
+    var sourceFiles = gulp.watch(config.sources.files.all);
+
+    let verify = (path) => {
+        if (anymatch(parserFiles, path)) {
+            return watcher(() => {
+                return styleCheck(path);
+            },
+            () => {
+                return tranclucate(path);
+            });
+        }
+    };
+
+    sourceFiles.on('all', (e, path) => {
+        util.log(util.colors.green(e) + ': ' + util.colors.bold(path));
+    });
+
+    [
+        'add',
+        'change',
+        'unlink'
+    ].forEach((e) => {
+        sourceFiles.on(e, verify);
+    });
+
+    return sourceFiles;
+}
+
+gulp.task('watch', precisely);

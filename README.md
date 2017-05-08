@@ -26,6 +26,7 @@ Several things left to accomplish before it can be used.
 6. split compilation, style check and tests into steps
    - move configs
 7. implement build and gulp in ts
+8. translate unit test failures back to ts files (source-map-support?)
 
 ## Implementation
 
@@ -38,6 +39,10 @@ Several things left to accomplish before it can be used.
    - description
    - examples
 4. choose typings vs @types
+5. add streams + buffers support (accept readable stream and return readable stream)
+6. use jump / stepBack manager methods to manipulate parsing logic
+7. provide stats?
+8. Remove ambient declarations from source
 
 ## vscode integration
 
