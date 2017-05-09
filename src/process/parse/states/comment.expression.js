@@ -24,7 +24,7 @@ var CommentExpression = (function () {
     CommentExpression.prototype.switchBack = function () {
         this.manager.switchTo(this.prev);
         var comment = this.sequence.substring(0, this.sequence.length - 3);
-        this.commentsAdder.addComments(new xcomment_1.default(comment));
+        this.commentsAdder.addComments(new xcomment_1.XComment(comment));
         this.sequence = "";
     };
     return CommentExpression;

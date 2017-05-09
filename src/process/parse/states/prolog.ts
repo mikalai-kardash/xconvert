@@ -1,3 +1,6 @@
+import { IXAttribute } from "../../../xml/schema";
+import { IAttributeAdder } from "../setters";
+import { IState, IStateManager } from "../states";
 import * as Symbols from "../symbols";
 import AttributeExpression from "./attribue.expression";
 

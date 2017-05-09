@@ -9,6 +9,6 @@ var XComment = (function () {
     };
     return XComment;
 }());
-exports.default = XComment;
+exports.XComment = XComment;
 
 //# sourceMappingURL=xcomment.js.map

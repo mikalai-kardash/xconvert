@@ -1,3 +1,9 @@
+import { IVisitable, IVisitor } from "./visitor";
+
+interface IXComment extends IVisitable {
+    Comment: string;
+}
+
 class XComment implements IXComment {
     constructor(public Comment: string) {}
 
@@ -6,4 +12,7 @@ class XComment implements IXComment {
     }
 }
 
-export default XComment;
+export {
+    IXComment,
+    XComment,
+};

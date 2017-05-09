@@ -1,4 +1,5 @@
 import { JsArray, JsObject, JsProperty } from "../../js/schema";
+import { IXNode, IXText } from "../../xml/schema";
 import Inspector from "./inspector";
 import * as Properties from "./properties";
 

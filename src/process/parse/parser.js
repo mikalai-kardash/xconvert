@@ -23,7 +23,7 @@ var Parser = (function () {
             var ch = xmlContent[this.position];
             this.read(ch);
         }
-        var xDoc = new xdoc_1.default();
+        var xDoc = new xdoc_1.XDoc();
         var attrs = d.attributes;
         attrs.forEach(function (a) {
             switch (a.Name) {

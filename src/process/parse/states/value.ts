@@ -1,3 +1,5 @@
+import { IValueSetter } from "../setters";
+import { IState, IStateManager } from "../states";
 import * as Symbols from "../symbols";
 
 class Value implements IState {

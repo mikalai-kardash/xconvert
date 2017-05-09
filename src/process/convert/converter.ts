@@ -1,4 +1,5 @@
 import { JsArray, JsObject, JsProperty } from "../../js/schema";
+import { IVisitor, IXDoc } from "../../xml/schema";
 import { CurrentObject } from "./current.object";
 import Inspector from "./inspector";
 import * as Properties from "./properties";

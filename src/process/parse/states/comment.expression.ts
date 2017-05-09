@@ -1,4 +1,6 @@
-import XComment from "../../../xml/xcomment";
+import { XComment } from "../../../xml/xcomment";
+import { ICommentsAdder } from "../setters";
+import { IState, IStateManager } from "../states";
 
 class CommentExpression implements IState {
     public sequence: string = "";

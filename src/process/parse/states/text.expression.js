@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var xtext_1 = require("../../../xml/xtext");
+var schema_1 = require("../../../xml/schema");
 var Symbols = require("../symbols");
 var TextExpression = (function () {
     function TextExpression(manager, prev, textAdder) {
@@ -22,7 +22,7 @@ var TextExpression = (function () {
     };
     TextExpression.prototype.switchBack = function () {
         this.manager.switchTo(this.prev);
-        this.textAdder.addText(new xtext_1.default(this.text));
+        this.textAdder.addText(new schema_1.XText(this.text));
     };
     return TextExpression;
 }());

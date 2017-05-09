@@ -1,4 +1,6 @@
-import XText from "../../../xml/xtext";
+import { XText } from "../../../xml/schema";
+import { ITextAdder } from "../setters";
+import { IState, IStateManager } from "../states";
 import * as Symbols from "../symbols";
 
 class TextExpression implements IState {

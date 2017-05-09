@@ -1,3 +1,4 @@
+import { IXDoc } from "../../xml/schema";
 import Inspector from "./inspector";
 
 interface ICleaner {

@@ -1,3 +1,10 @@
+import { IVisitable, IVisitor } from "./visitor";
+
+interface IXAttribute extends IVisitable {
+    Name: string;
+    Value: string;
+}
+
 class XAttribute implements IXAttribute {
     public static Get(name: string, value: string): IXAttribute {
         const attr = new XAttribute(name);
@@ -15,4 +22,7 @@ class XAttribute implements IXAttribute {
     }
 }
 
-export default XAttribute;
+export {
+    IXAttribute,
+    XAttribute,
+};

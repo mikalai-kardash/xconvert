@@ -1,3 +1,5 @@
+import { IState, IStateManager } from "../../src/process/parse/states";
+
 class TestStateManager implements IStateManager {
     public current: IState;
     public position: number = 0;

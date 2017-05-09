@@ -9,6 +9,6 @@ var XText = (function () {
     };
     return XText;
 }());
-exports.default = XText;
+exports.XText = XText;
 
 //# sourceMappingURL=xtext.js.map

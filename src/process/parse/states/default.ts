@@ -1,4 +1,7 @@
+import { IXAttribute, IXComment, IXNode } from "../../../xml/schema";
 import * as Expressions from "../expressions";
+import { IAttributeAdder, ICommentsAdder, INodeAdder } from "../setters";
+import { IState, IStateManager } from "../states";
 import * as Symbols from "../symbols";
 import CommentExpression from "./comment.expression";
 import NodeExpression from "./node.expression";

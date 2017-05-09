@@ -6,6 +6,13 @@ import NodeExpression from "../src/process/parse/states/node.expression";
 import PrologExpression from "../src/process/parse/states/prolog";
 import TextExpression from "../src/process/parse/states/text.expression";
 import Value from "../src/process/parse/states/value";
+import {
+    IXAttribute,
+    IXComment,
+    IXDoc,
+    IXNode,
+    IXText,
+} from "../src/xml/schema";
 import TestAttributeAdder from "./parser/TestAttributeAdder";
 import TestCommentsAdder from "./parser/TestCommentsAdder";
 import TestNameSetter from "./parser/TestNameSetter";

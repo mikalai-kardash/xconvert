@@ -43,6 +43,7 @@ Several things left to accomplish before it can be used.
 6. use jump / stepBack manager methods to manipulate parsing logic
 7. provide stats?
 8. Remove ambient declarations from source
+9. .. references
 
 ## vscode integration
 

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var xnode_1 = require("../../../xml/xnode");
+var schema_1 = require("../../../xml/schema");
 var Expressions = require("../expressions");
 var Symbols = require("../symbols");
 var attribue_expression_1 = require("./attribue.expression");
@@ -105,7 +105,7 @@ var NodeExpression = (function () {
     };
     NodeExpression.prototype.switchBack = function () {
         this.manager.switchTo(this.prev);
-        var xNode = new xnode_1.default(this.name);
+        var xNode = new schema_1.XNode(this.name);
         if (this.attributes.length > 0) {
             xNode.Attributes = [];
             this.attributes.forEach(function (a) {

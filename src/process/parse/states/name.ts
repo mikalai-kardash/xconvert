@@ -1,3 +1,5 @@
+import { INameSetter } from "../setters";
+import { IState, IStateManager } from "../states";
 import * as Symbols from "../symbols";
 
 class Name implements IState {

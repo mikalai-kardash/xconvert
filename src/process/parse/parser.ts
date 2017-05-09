@@ -1,4 +1,5 @@
-import XDoc from "../../xml/xdoc";
+import { IXDoc, XDoc } from "../../xml/xdoc";
+import { IState, IStateManager } from "./states";
 import Default from "./states/default";
 
 interface IParser {

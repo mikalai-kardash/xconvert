@@ -1,4 +1,15 @@
-import { XAttribute, XDoc, XNode, XText } from "../../xml/schema";
+import {
+    IVisitor,
+    IXAttribute,
+    IXComment,
+    IXDoc,
+    IXNode,
+    IXText,
+    XAttribute,
+    XDoc,
+    XNode,
+    XText,
+} from "../../xml/schema";
 
 class Inspector implements IVisitor {
     public document: IXDoc;

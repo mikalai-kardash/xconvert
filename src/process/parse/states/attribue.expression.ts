@@ -1,4 +1,6 @@
 import { XAttribute } from "../../../xml/schema";
+import { IAttributeAdder, INameSetter, IValueSetter } from "../setters";
+import { IState, IStateManager } from "../states";
 import * as Symbols from "../symbols";
 import Name from "./name";
 import Value from "./value";

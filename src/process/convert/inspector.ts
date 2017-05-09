@@ -1,3 +1,4 @@
+import { IVisitor, IXAttribute, IXComment, IXDoc, IXNode, IXText } from "../../xml/schema";
 import { ICurrentObject } from "./current.object";
 
 class Inspector implements IVisitor {

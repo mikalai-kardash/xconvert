@@ -1,3 +1,9 @@
+import { IVisitable, IVisitor } from "./visitor";
+
+interface IXText extends IVisitable {
+    Text: string;
+}
+
 class XText implements IXText {
     constructor(public Text: string) {}
 
@@ -6,4 +12,7 @@ class XText implements IXText {
     }
 }
 
-export default XText;
+export {
+    IXText,
+    XText,
+};

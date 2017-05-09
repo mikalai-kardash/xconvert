@@ -7,3 +7,8 @@ interface IStateManager {
     switchTo(state: IState): void;
     jump(n: number): void;
 }
+
+export {
+    IState,
+    IStateManager,
+};

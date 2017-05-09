@@ -1,3 +1,6 @@
+import { ITextAdder } from "../../src/process/parse/setters";
+import { IXText } from "../../src/xml/schema";
+
 class TestTextAdder implements ITextAdder {
     public text: IXText;
 

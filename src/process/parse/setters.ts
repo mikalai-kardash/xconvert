@@ -1,3 +1,5 @@
+import { IXAttribute, IXComment, IXDoc, IXNode, IXText } from "../../xml/schema";
+
 interface INameSetter {
     setName(name: string): void;
 }
@@ -21,3 +23,12 @@ interface ITextAdder {
 interface ICommentsAdder {
     addComments(comments: IXComment): void;
 }
+
+export {
+    INameSetter,
+    IValueSetter,
+    IAttributeAdder,
+    INodeAdder,
+    ITextAdder,
+    ICommentsAdder,
+};

@@ -1,6 +1,17 @@
 import * as util from "util";
 import { Converter, IConverter } from "../src/process/convert/converter";
-import { XAttribute, XDoc, XNode, XText } from "../src/xml/schema";
+import {
+    IXAttribute,
+    IXComment,
+    IXDoc,
+    IXNode,
+    IXText,
+    XAttribute,
+    XComment,
+    XDoc,
+    XNode,
+    XText,
+} from "../src/xml/schema";
 
 const log = (obj) => {
     // tslint:disable-next-line:no-console

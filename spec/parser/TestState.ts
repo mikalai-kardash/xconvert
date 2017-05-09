@@ -1,3 +1,5 @@
+import { IState } from "../../src/process/parse/states";
+
 class TestState implements IState {
     public temp = "";
 
