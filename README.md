@@ -42,7 +42,7 @@ Several things left to accomplish before it can be used.
 5. add streams + buffers support (accept readable stream and return readable stream)
 6. use jump / stepBack manager methods to manipulate parsing logic
 7. provide stats?
-8. Remove ambient declarations from source
+8. [x] Remove ambient declarations from source
 9. .. references
 
 ## vscode integration
