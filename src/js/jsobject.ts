@@ -1,3 +1,10 @@
+import { IJsProperty } from "./jsproperty";
+import { IJsVisitable, IJsVisitor } from "./visitor";
+
+interface IJsObject extends IJsVisitable {
+    properties: IJsProperty[];
+}
+
 class JsObject implements IJsObject {
     public properties: IJsProperty[] = [];
 
@@ -6,4 +13,7 @@ class JsObject implements IJsObject {
     }
 }
 
-export default JsObject;
+export {
+    IJsObject,
+    JsObject,
+};

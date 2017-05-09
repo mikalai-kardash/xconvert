@@ -10,6 +10,6 @@ var JsProperty = (function () {
     };
     return JsProperty;
 }());
-exports.default = JsProperty;
+exports.JsProperty = JsProperty;
 
 //# sourceMappingURL=jsproperty.js.map

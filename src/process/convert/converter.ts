@@ -1,4 +1,4 @@
-import { JsArray, JsObject, JsProperty } from "../../js/schema";
+import { IJsObject, IJsProperty, JsArray, JsObject, JsProperty } from "../../js/schema";
 import { IVisitor, IXDoc } from "../../xml/schema";
 import { CurrentObject } from "./current.object";
 import Inspector from "./inspector";

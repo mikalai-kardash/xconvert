@@ -1,3 +1,12 @@
+import { IJsArray } from "./jsarray";
+import { IJsObject } from "./jsobject";
+import { IJsVisitable, IJsVisitor } from "./visitor";
+
+interface IJsProperty extends IJsVisitable {
+    name: string;
+    value: IJsObject | IJsArray | string;
+}
+
 class JsProperty implements IJsProperty {
     constructor(
         public name: string,
@@ -8,4 +17,7 @@ class JsProperty implements IJsProperty {
     }
 }
 
-export default JsProperty;
+export {
+    IJsProperty,
+    JsProperty,
+};

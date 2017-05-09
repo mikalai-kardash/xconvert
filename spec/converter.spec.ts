@@ -1,4 +1,5 @@
 import * as util from "util";
+import { IJsArray, IJsObject, IJsProperty } from "../src/js/schema";
 import { Converter, IConverter } from "../src/process/convert/converter";
 import {
     IXAttribute,

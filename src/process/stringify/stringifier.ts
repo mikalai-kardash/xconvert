@@ -1,3 +1,4 @@
+import { IJsArray, IJsObject } from "../../js/schema";
 import { Writer } from "./writer";
 
 interface IStringifier {

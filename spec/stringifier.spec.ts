@@ -1,4 +1,4 @@
-import { JsArray, JsObject, JsProperty } from "../src/js/schema";
+import { IJsArray, IJsObject, IJsProperty, JsArray, JsObject, JsProperty } from "../src/js/schema";
 import { stringify } from "../src/process/stringify/stringifier";
 
 describe("stringifier", () => {

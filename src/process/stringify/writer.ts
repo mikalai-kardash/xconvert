@@ -1,3 +1,4 @@
+import { IJsArray, IJsObject, IJsProperty, IJsVisitor } from "../../js/schema";
 import JsArrayVisitor from "./jsarray.visitor";
 import JsObjectVisitor from "./jsobject.visitor";
 import JsPropertyVisitor from "./jsproperty.visitor";

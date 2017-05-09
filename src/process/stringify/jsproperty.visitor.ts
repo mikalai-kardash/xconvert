@@ -1,3 +1,4 @@
+import { IJsArray, IJsObject, IJsProperty, IJsVisitor } from "../../js/schema";
 import { IWriter } from "./writer";
 
 class JsPropertyVisitor {
