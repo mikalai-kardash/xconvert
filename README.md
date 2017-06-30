@@ -140,7 +140,7 @@ Several things left to accomplish before it can be used.
    - examples
 4. choose typings vs @types
 5. add streams + buffers support (accept readable stream and return readable stream)
-6. use jump / stepBack manager methods to manipulate parsing logic
+6. [x] use jump / stepBack manager methods to manipulate parsing logic
 7. provide stats?
 8. [x] Remove ambient declarations from source
 9. .. references
