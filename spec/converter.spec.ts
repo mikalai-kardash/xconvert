@@ -195,7 +195,7 @@ describe("converter", () => {
                 const root: IXNode = new XNode("packages");
 
                 xml.Root = root;
-                root.Children = [{ Text: "some text" } as IXText];
+                root.Children = [ new XText("some text") ];
 
                 js = converter.Convert(xml);
             });
@@ -211,7 +211,6 @@ describe("converter", () => {
             it("root node has property", () => {
                 const root = js.properties[0];
                 const val = root.value as IJsObject;
-
                 expect(val.properties.length).toEqual(2);
             });
 
