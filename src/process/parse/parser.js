@@ -4,6 +4,7 @@ var xdoc_1 = require("../../xml/xdoc");
 var default_1 = require("./states/default");
 var Parser = (function () {
     function Parser() {
+        this.current = new default_1.default(this, null);
         this.position = 0;
     }
     Parser.prototype.switchTo = function (state) {
@@ -16,13 +17,15 @@ var Parser = (function () {
         this.position += n;
     };
     Parser.prototype.Parse = function (xmlContent) {
-        var d = new default_1.default(this, null);
-        this.switchTo(d);
         this.position = 0;
         for (; this.position < xmlContent.length; this.position++) {
             var ch = xmlContent[this.position];
             this.read(ch);
         }
+        return this.GetXmlDocument();
+    };
+    Parser.prototype.GetXmlDocument = function () {
+        var d = this.current;
         var xDoc = new xdoc_1.XDoc();
         var attrs = d.attributes;
         attrs.forEach(function (a) {

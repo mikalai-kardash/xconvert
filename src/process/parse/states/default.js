@@ -35,7 +35,7 @@ var Default = (function () {
                         this.sequence = "";
                         var node = new node_expression_1.default(this.manager, this, this);
                         this.switchTo(node);
-                        node.read(ch);
+                        this.manager.jump(-1);
                     }
                 }
                 else if (this.endsWith("<!--")) {

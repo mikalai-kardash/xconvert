@@ -44,7 +44,7 @@ class Default implements IState, IAttributeAdder, INodeAdder, ICommentsAdder {
 
                         const node = new NodeExpression(this.manager, this, this);
                         this.switchTo(node);
-                        node.read(ch);
+                        this.manager.jump(-1);
                     }
                 } else if (this.endsWith("<!--")) {
                     this.sequence = "";

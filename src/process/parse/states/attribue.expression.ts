@@ -23,13 +23,13 @@ class AttributeExpression implements IState, INameSetter, IValueSetter {
 
             case Symbols.Space:
                 this.switchBack();
-                this.prev.read(ch);
+                this.manager.jump(-1);
                 break;
 
             default:
                 const name = new Name(this.manager, this, this);
                 this.switchTo(name);
-                name.read(ch);
+                this.manager.jump(-1);
                 break;
         }
     }

@@ -38,10 +38,8 @@ class PrologExpression implements IState, IAttributeAdder {
                     if (this.previousChar === Symbols.Space) {
                         this.previousChar = "";
 
-                        const attribute = new AttributeExpression(this.manager, this, this);
-                        this.switchTo(attribute);
-
-                        attribute.read(ch);
+                        this.switchTo(new AttributeExpression(this.manager, this, this));
+                        this.manager.jump(-1);
                     } else {
                         this.wait(ch);
                     }

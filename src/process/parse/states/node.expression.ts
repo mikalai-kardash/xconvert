@@ -74,7 +74,7 @@ class NodeExpression implements IState, IAttributeAdder, ITextAdder, INodeAdder,
             default:
                 const attr = new AttributeExpression(this.manager, this, this);
                 this.switchTo(attr);
-                attr.read(ch);
+                this.manager.jump(-1);
                 break;
         }
 
@@ -99,12 +99,12 @@ class NodeExpression implements IState, IAttributeAdder, ITextAdder, INodeAdder,
                     } else {
                         const node = new NodeExpression(this.manager, this, this);
                         this.switchTo(node);
-                        node.read(ch);
+                        this.manager.jump(-1);
                     }
                 } else {
                     const text = new TextExpression(this.manager, this, this);
                     this.switchTo(text);
-                    text.read(ch);
+                    this.manager.jump(-1);
                 }
                 break;
         }

@@ -20,12 +20,12 @@ var AttributeExpression = (function () {
                 break;
             case Symbols.Space:
                 this.switchBack();
-                this.prev.read(ch);
+                this.manager.jump(-1);
                 break;
             default:
                 var name = new name_1.default(this.manager, this, this);
                 this.switchTo(name);
-                name.read(ch);
+                this.manager.jump(-1);
                 break;
         }
     };

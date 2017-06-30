@@ -116,7 +116,7 @@ function csTestsWatch() {
 function runTestsWatch() {
     return gulp
         .src(config.tests.specs.all)
-        .pipe(jasmine(config.tests.jasmine.default));
+        .pipe(jasmine(config.tests.jasmine.custom));
 }
 
 function watchSources() {

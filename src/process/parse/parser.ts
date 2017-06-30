@@ -7,7 +7,7 @@ interface IParser {
 }
 
 class Parser implements IParser, IStateManager {
-    public current: IState;
+    public current: IState = new Default(this, null);
     public position: number = 0;
 
     public switchTo(state: IState): void {
@@ -23,9 +23,6 @@ class Parser implements IParser, IStateManager {
     }
 
     public Parse(xmlContent: string): IXDoc {
-        const d = new Default(this, null);
-
-        this.switchTo(d);
         this.position = 0;
 
         for (; this.position < xmlContent.length; this.position++) {
@@ -33,6 +30,11 @@ class Parser implements IParser, IStateManager {
             this.read(ch);
         }
 
+        return this.GetXmlDocument();
+    }
+
+    public GetXmlDocument(): IXDoc {
+        const d = this.current as Default;
         const xDoc: IXDoc = new XDoc();
         const attrs = d.attributes;
 

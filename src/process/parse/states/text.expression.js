@@ -13,7 +13,7 @@ var TextExpression = (function () {
         switch (ch) {
             case Symbols.NodeOpening:
                 this.switchBack();
-                this.prev.read(ch);
+                this.manager.jump(-1);
                 break;
             default:
                 this.text += ch;

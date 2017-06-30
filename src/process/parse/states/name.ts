@@ -15,7 +15,7 @@ class Name implements IState {
             case Symbols.Equal:
                 this.nameSetter.setName(this.temp);
                 this.manager.switchTo(this.prev);
-                this.prev.read(ch);
+                this.manager.jump(-1);
                 break;
 
             default:

@@ -63,7 +63,7 @@ var NodeExpression = (function () {
             default:
                 var attr = new attribue_expression_1.default(this.manager, this, this);
                 this.switchTo(attr);
-                attr.read(ch);
+                this.manager.jump(-1);
                 break;
         }
     };
@@ -85,13 +85,13 @@ var NodeExpression = (function () {
                     else {
                         var node = new NodeExpression(this.manager, this, this);
                         this.switchTo(node);
-                        node.read(ch);
+                        this.manager.jump(-1);
                     }
                 }
                 else {
                     var text = new text_expression_1.default(this.manager, this, this);
                     this.switchTo(text);
-                    text.read(ch);
+                    this.manager.jump(-1);
                 }
                 break;
         }

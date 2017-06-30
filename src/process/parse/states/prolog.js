@@ -29,9 +29,8 @@ var PrologExpression = (function () {
                 {
                     if (this.previousChar === Symbols.Space) {
                         this.previousChar = "";
-                        var attribute = new attribue_expression_1.default(this.manager, this, this);
-                        this.switchTo(attribute);
-                        attribute.read(ch);
+                        this.switchTo(new attribue_expression_1.default(this.manager, this, this));
+                        this.manager.jump(-1);
                     }
                     else {
                         this.wait(ch);
