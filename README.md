@@ -130,7 +130,7 @@ Several things left to accomplish before it can be used.
 
 ## Implementation
 
-1. Visitor - Rework to be same style, simplicity.
+1. [x] Visitor - Rework to be same style, simplicity.
 2. tsconfig.json for each part
    - build
    - tests
