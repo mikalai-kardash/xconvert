@@ -1,6 +1,6 @@
 import * as util from "util";
-import { IJsArray, IJsObject, IJsProperty } from "../src/js/schema";
-import { Converter, IConverter } from "../src/process/convert/converter";
+import { IJsArray, IJsObject, IJsProperty } from "../lib/js/schema";
+import { Converter, IConverter } from "../lib/process/convert/converter";
 import {
     IXAttribute,
     IXComment,
@@ -12,7 +12,7 @@ import {
     XDoc,
     XNode,
     XText,
-} from "../src/xml/schema";
+} from "../lib/xml/schema";
 
 const log = (obj) => {
     // tslint:disable-next-line:no-console

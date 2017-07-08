@@ -1,18 +1,18 @@
-import { Parser } from "../src/process/parse/parser";
-import AttributeExpression from "../src/process/parse/states/attribue.expression";
-import CommentExpression from "../src/process/parse/states/comment.expression";
-import Name from "../src/process/parse/states/name";
-import NodeExpression from "../src/process/parse/states/node.expression";
-import PrologExpression from "../src/process/parse/states/prolog";
-import TextExpression from "../src/process/parse/states/text.expression";
-import Value from "../src/process/parse/states/value";
+import { Parser } from "../lib/process/parse/parser";
+import AttributeExpression from "../lib/process/parse/states/attribue.expression";
+import CommentExpression from "../lib/process/parse/states/comment.expression";
+import Name from "../lib/process/parse/states/name";
+import NodeExpression from "../lib/process/parse/states/node.expression";
+import PrologExpression from "../lib/process/parse/states/prolog";
+import TextExpression from "../lib/process/parse/states/text.expression";
+import Value from "../lib/process/parse/states/value";
 import {
     IXAttribute,
     IXComment,
     IXDoc,
     IXNode,
     IXText,
-} from "../src/xml/schema";
+} from "../lib/xml/schema";
 import TestAttributeAdder from "./parser/TestAttributeAdder";
 import TestCommentsAdder from "./parser/TestCommentsAdder";
 import TestNameSetter from "./parser/TestNameSetter";

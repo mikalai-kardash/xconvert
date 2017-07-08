@@ -1,5 +1,5 @@
-import { IAttributeAdder } from "../../src/process/parse/setters";
-import { IXAttribute } from "../../src/xml/schema";
+import { IAttributeAdder } from "../../lib/process/parse/setters";
+import { IXAttribute } from "../../lib/xml/schema";
 
 class TestAttributeAdder implements IAttributeAdder {
     public attr: IXAttribute;

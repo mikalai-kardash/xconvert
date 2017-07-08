@@ -1,5 +1,5 @@
-import { IJsArray, IJsObject, IJsProperty, JsArray, JsObject, JsProperty } from "../src/js/schema";
-import { stringify } from "../src/process/stringify/stringifier";
+import { IJsArray, IJsObject, IJsProperty, JsArray, JsObject, JsProperty } from "../lib/js/schema";
+import { stringify } from "../lib/process/stringify/stringifier";
 
 describe("stringifier", () => {
 

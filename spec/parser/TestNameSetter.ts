@@ -1,4 +1,4 @@
-import { INameSetter } from "../../src/process/parse/setters";
+import { INameSetter } from "../../lib/process/parse/setters";
 
 class TestNameSetter implements INameSetter {
     public name = "";

@@ -1,5 +1,5 @@
-import { ICommentsAdder } from "../../src/process/parse/setters";
-import { IXComment } from "../../src/xml/schema";
+import { ICommentsAdder } from "../../lib/process/parse/setters";
+import { IXComment } from "../../lib/xml/schema";
 
 class TestCommentsAdder implements ICommentsAdder {
     public comment: IXComment;

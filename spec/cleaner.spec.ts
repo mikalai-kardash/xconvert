@@ -1,4 +1,4 @@
-import { clean } from "../src/process/clean/cleaner";
+import { clean } from "../lib/process/clean/cleaner";
 import {
     IXAttribute,
     IXComment,
@@ -10,7 +10,7 @@ import {
     XDoc,
     XNode,
     XText,
-} from "../src/xml/schema";
+} from "../lib/xml/schema";
 
 const findAttr: (node: IXNode, name: string) => IXAttribute = (n, name) => {
     return n.Attributes.find((a) => {

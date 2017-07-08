@@ -1,4 +1,4 @@
-import { convert as ConvertXmlToJS } from "../src/index";
+import { convert as ConvertXmlToJS } from "../lib/index";
 import { readFile } from "./reader";
 import { SpecConfiguration } from "./spec.config";
 

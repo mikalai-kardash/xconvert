@@ -7,26 +7,49 @@ var jasmine = require('gulp-jasmine');
 var print = require('gulp-print');
 var util = require('gulp-util');
 var stream = require('streamqueue');
+var merge = require('merge2');
 var watcher = require('./build/watcher');
+var del = require('del');
 
 var config = require('./gulp.config')();
 
-var sources = tsc.createProject(config.project);
-var tests = tsc.createProject(config.project);
+var srcSettings = require(config.sources.project).compilerOptions;
+var tstSettings = require(config.tests.project).compilerOptions;
+
+var tests = tsc.createProject(config.tests.project);
+var sources = tsc.createProject(config.sources.project);
+
+function clean(done) {
+    del.sync(['./lib/**']);
+    done();
+}
+
+function postCompile(done) {
+    del.sync(['./lib/lib/**']);
+    done();
+}
 
 function compileSource() {
-    return gulp
+    var libDir = './lib/';
+
+    var compiled = gulp
         .src(config.sources.files.all)
         .pipe(sourcemaps.init())
-        .pipe(sources())
-        .js
-        .pipe(sourcemaps.write(config.sources.maps))
-        .pipe(gulp.dest(config.sources.dest));
+        .pipe(sources(tsc.reporter.fullReporter()));
+
+    var js = compiled.js
+        .pipe(sourcemaps.write(libDir))
+        .pipe(gulp.dest(libDir));
+
+    var dts = compiled.dts
+        .pipe(gulp.dest(libDir));
+
+    return merge(js, dts);
 }
 
 function compileTests() {
     var files = [config.typings].concat(
-        config.sources.files.all,
+        config.sources.files.declarations,
         config.tests.files.all
     );
 
@@ -68,10 +91,14 @@ gulp.task('cs-src', csSource);
 gulp.task('cs-tests', csTests);
 gulp.task('cs', gulp.parallel(csSource, csTests));
 
-gulp.task('compile-source', gulp.series(csSource, compileSource));
-gulp.task('compile-tests', gulp.series(csTests, compileTests));
-gulp.task('compile', gulp.parallel('compile-source', 'compile-tests'));
+gulp.task('compile-source', gulp.series(
+    gulp.parallel(csSource, clean), 
+    compileSource, 
+    postCompile)
+);
 
+gulp.task('compile-tests', gulp.series(csTests, compileTests));
+gulp.task('compile', gulp.series('compile-source', 'compile-tests'));
 gulp.task('test', gulp.series('compile', runTests));
 
 function compileSourceWatch() {

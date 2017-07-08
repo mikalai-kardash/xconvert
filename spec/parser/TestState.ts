@@ -1,4 +1,4 @@
-import { IState } from "../../src/process/parse/states";
+import { IState } from "../../lib/process/parse/states";
 
 class TestState implements IState {
     public temp = "";

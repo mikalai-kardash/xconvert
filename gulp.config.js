@@ -15,11 +15,15 @@ module.exports = function () {
 
         "sources": {
             "files": {
-                "all": [ src + tsFiles ]
+                "all": [ src + tsFiles ],
+                "declarations": [
+                    "./lib/" + tsFiles
+                ]
             },
             "dir": src,
             "dest": src,
-            "maps": "./"
+            "maps": "./",
+            "project": "./tsconfig.src.json"
         },
 
 
@@ -53,7 +57,8 @@ module.exports = function () {
             "filter": [ "spec/**/*.*" ],
             "dir": tests,
             "dest": tests,
-            "maps": "./"
+            "maps": "./",
+            "project": "./tsconfig.tst.json"
         },
 
         "typings": "./typings/index.d.ts",

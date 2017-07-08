@@ -1,4 +1,4 @@
-import { IValueSetter } from "../../src/process/parse/setters";
+import { IValueSetter } from "../../lib/process/parse/setters";
 
 class TestValueSetter implements IValueSetter {
     public value: string;

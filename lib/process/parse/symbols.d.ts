@@ -1,0 +1,10 @@
+export declare const NodeOpening = "<";
+export declare const NodeClosing = ">";
+export declare const Prolog = "?";
+export declare const Space = " ";
+export declare const Equal = "=";
+export declare const DoubleQuote = "\"";
+export declare const Exclamation = "!";
+export declare const SingleQuote = "'";
+export declare const ForwardSlash = "/";
+export declare const BackwardSlash = "\\";

@@ -1,4 +1,4 @@
-import { IState, IStateManager } from "../../src/process/parse/states";
+import { IState, IStateManager } from "../../lib/process/parse/states";
 
 class TestStateManager implements IStateManager {
     public current: IState;

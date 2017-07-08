@@ -1,5 +1,5 @@
-import { INodeAdder } from "../../src/process/parse/setters";
-import { IXNode } from "../../src/xml/schema";
+import { INodeAdder } from "../../lib/process/parse/setters";
+import { IXNode } from "../../lib/xml/schema";
 
 class TestNodeAdder implements INodeAdder {
     public node: IXNode;
