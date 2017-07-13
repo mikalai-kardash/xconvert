@@ -3,7 +3,6 @@
 .gitignore
 .vscode
 *.ts
-*.js.map
 
 npm-debug.log
 
@@ -11,10 +10,13 @@ node_modules
 build
 spec
 typings
+src
 
 gulp.config.js
 gulpfile.js
 
 tsconfig.json
+tsconfig.src.json
+tsconfig.tst.json
 tslint.json
 typings.json

@@ -1,11 +1,16 @@
 {
   "name": "xconvert",
   "version": "0.0.1",
-  "description": "XML converter for JSON format.",
-  "main": "dist/index",
-  "directories": {
-    "test": "test"
+  "description": "converts xml into json",
+  "homepage": "https://github.com/mikalai-kardash/xconvert",
+  "bugs": {
+    "url": "https://github.com/mikalai-kardash/xconvert/issues"
   },
+  "main": "lib/index",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": "mikalai-kardash/xconvert",
   "scripts": {
     "test": "gulp test"
   },

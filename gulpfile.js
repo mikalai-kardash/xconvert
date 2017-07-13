@@ -13,20 +13,19 @@ var del = require('del');
 
 var config = require('./gulp.config')();
 
-var srcSettings = require(config.sources.project).compilerOptions;
-var tstSettings = require(config.tests.project).compilerOptions;
-
 var tests = tsc.createProject(config.tests.project);
 var sources = tsc.createProject(config.sources.project);
 
 function clean(done) {
-    del.sync(['./lib/**']);
-    done();
+    del(['./lib/**']).then(function() {
+        done();
+    });
 }
 
 function postCompile(done) {
-    del.sync(['./lib/lib/**']);
-    done();
+    del(['./lib/lib/**']).then(function() {
+        done();
+    });
 }
 
 function compileSource() {
@@ -67,21 +66,22 @@ function compileTests() {
         .pipe(gulp.dest(config.tests.dest));
 }
 
-function csSource() {
+function lint(files) {
     return gulp
-        .src(config.sources.files.all)
+        .src(files)
         .pipe(tslint(config.tslint))
         .pipe(tslint.report());
 }
 
-function csTests() {
-    return gulp
-        .src(config.tests.files.all)
-        .pipe(tslint(config.tslint))
-        .pipe(tslint.report());    
+function csSource() {
+    return lint(config.sources.files.all);
 }
 
-function runTests() {
+function csTests() {
+    return lint(config.tests.files.all);
+}
+
+function test() {
     return gulp
         .src(config.tests.specs.all)
         .pipe(jasmine(config.tests.jasmine.custom));
@@ -99,7 +99,7 @@ gulp.task('compile-source', gulp.series(
 
 gulp.task('compile-tests', gulp.series(csTests, compileTests));
 gulp.task('compile', gulp.series('compile-source', 'compile-tests'));
-gulp.task('test', gulp.series('compile', runTests));
+gulp.task('test', gulp.series('compile', test));
 
 function compileSourceWatch() {
     return gulp
@@ -135,23 +135,17 @@ function csSourceWatch() {
 
 function csTestsWatch() {
     return gulp
-        .src(config.tests.files.all, { since: gulp.lastRun(csSourceWatch) })
+        .src(config.tests.files.all, { since: gulp.lastRun(csTestsWatch) })
         .pipe(tslint(config.tslint))
         .pipe(tslint.report());    
 }
 
-function runTestsWatch() {
-    return gulp
-        .src(config.tests.specs.all)
-        .pipe(jasmine(config.tests.jasmine.custom));
-}
-
 function watchSources() {
-    return watcher(csSourceWatch, compileSourceWatch, runTestsWatch);
+    return watcher(csSourceWatch, compileSourceWatch, test);
 }
 
 function watchTests() {
-    return watcher(csTestsWatch, compileTestsWatch, runTests);
+    return watcher(csTestsWatch, compileTestsWatch, test);
 }
 
 function watch() {
